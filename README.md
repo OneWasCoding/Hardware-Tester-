@@ -14,3 +14,9 @@ To install and ensure that Laravel is version ^11.0, follow these steps:
 3. Downgrade Laravel to version 11.0:  
    - Run **composer require laravel/framework:^11.0 --with-all-dependencies**  
    - Or manually update the **laravel/framework** version in **composer.json**, then run **composer update**.
+
+
+   libraries to install:
+   composer require "maatwebsite/excel:^3.1"
+   composer require yajra/laravel-datatables-oracle
+   composer require yajra/laravel-datatables-buttons

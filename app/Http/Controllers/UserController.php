@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\DataTables\userDataTable;
 use App\Models\user;
 use Illuminate\Http\Request;
 
@@ -10,9 +10,9 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(userDataTable $user_data_table)
     {
-        //
+        return $user_data_table->render("admin.users.index");
     }
 
     /**
