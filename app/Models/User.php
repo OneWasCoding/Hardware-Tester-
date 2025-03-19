@@ -11,6 +11,6 @@ class user extends Model
 
     protected $table="users";
 
-    protected $fillable=["fname","lname","age","gender","img","contact"];
+    protected $fillable=["fname","lname","age","gender","img","contact","created_at","updated_at"];
     
 }
