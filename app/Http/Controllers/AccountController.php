@@ -95,7 +95,7 @@ class AccountController extends Controller
                 $user_info->img=$filename;
                 $user_info->contact=$request->contact;
                 if($user_info->save()){
-                    $path=$request->file('img')->storeAs('images',$filename,'public');
+                    $path=$request->file('img')->storeAs('user_img',$filename,'public');
                     if ($path) {
                             // return Redirect::route('customer.index');
                             DB::commit();
@@ -124,9 +124,12 @@ class AccountController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(account $account)
+    public function edit(string $id)
     {
-        //
+        $user=user::where('account_id',$id)->first();
+        $account=account::where('account_id',$id)->first();
+
+        return view("admin.users.edit",compact('user','account'));
     }
 
     /**
