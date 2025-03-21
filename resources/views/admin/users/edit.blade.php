@@ -1,6 +1,17 @@
 <?php 
+// dd($user)
 ?> 
-
+@if($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>
+                {{$error}}
+            </li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <title>Profile Update</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
@@ -144,7 +155,9 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 profile-container">
-                <form action="update.php" method="post" enctype="multipart/form-data">
+                <form action="{{route('user.update',$account->account_id)}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
                     <div class="profile-header">
                         <div class="profile-photo-container">
                             <img src="{{asset('storage/user_img/'.$user->img)}}"
@@ -152,7 +165,7 @@
                                  class="profile-photo">
                             <label for="file-upload" class="photo-upload">
                                 <i class="fas fa-camera"></i>
-                                <input type="file" id="file-upload" name="file" class="d-none" accept="image/*">
+                                <input type="file" id="file-upload" name="img" class="d-none" accept="image/*">
                             </label>
                         </div>
                         <div>
