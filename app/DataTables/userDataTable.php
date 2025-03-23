@@ -1,7 +1,7 @@
 <?php
 
 namespace App\DataTables;
-
+use Illuminate\Support\Carbon;
 use App\Models\user;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -22,12 +22,22 @@ class userDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', function($row){
-                return '<a href="'.route("user.edit", $row->account_id).'" class="btn btn-primary"><i class="fa fa-edit"></i></a>
-                        <a href="'.route("user.destroy", $row->account_id).'" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                ';
-            })
-            ->setRowId('account_id');
+        ->addColumn('created_at', function ($row) {
+            return Carbon::parse($row->created_at)->format('d M Y, h:i A'); 
+        })
+        ->addColumn('updated_at', function ($row) {
+            return Carbon::parse($row->updated_at)->format('d M Y, h:i A');
+        })
+        ->addColumn('action', function ($row) {
+            return '<div class="btn-group" role="group">
+                        <a href="' . route("user.edit", $row->account_id) . '" class="btn btn-primary btn-xl mx-1">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="' . route("user.destroy", $row->account_id) . '" class="btn btn-danger btn-xl mx-1">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>';
+        })->setRowId('account_id');
     }
 
     /**
@@ -66,16 +76,16 @@ class userDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::computed('action')
+                  Column::make('user_id')->width(150)->addClass('text-center'),
+                  Column::make('fname')->width(150)->addClass('text-center'),
+                  Column::make('lname')->width(150)->addClass('text-center'),
+                  Column::make('created_at')->width(200)->addClass('text-center'),
+                  Column::make('updated_at')->width(200)->addClass('text-center'),
+                   Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
                   ->width(60)
-                  ->addClass('text-center'),
-            Column::make('user_id'),
-            Column::make('fname'),
-            Column::make("lname"),      
-            Column::make('created_at'),
-            Column::make('updated_at'),
+                  ->addClass('text-center no-wrap'), // Apply nowrap CSS
         ];
     }
 

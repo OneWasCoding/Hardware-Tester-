@@ -1,3 +1,7 @@
+
+@extends('layouts.base')
+@extends('layouts.template')
+@section('content')
 <?php 
 // dd($user)
 ?> 

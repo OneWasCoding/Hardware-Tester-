@@ -36,7 +36,7 @@ class AccountController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'fname' => 'required|min:2|alpha',
+            'fname' => 'required|min:2',
             'lname' => 'required|min:2|alpha',
             'age' => 'required|numeric|min:18',
             'contact' => 'required|digits:11',     
@@ -95,14 +95,19 @@ class AccountController extends Controller
                 $user_info->img=$filename;
                 $user_info->contact=$request->contact;
                 if($user_info->save()){
-                    $path=$request->file('img')->storeAs('user_img',$filename,'public');
+                    if($filename!=null){
+                        $path=$request->file('img')->storeAs('user_img',$filename,'public');
                     if ($path) {
                             // return Redirect::route('customer.index');
                             DB::commit();
                             echo "Success";
                         }
+                    }else{
+                        DB::commit();
+                        echo "Success2";
                     }
                     
+                    }
                 }   
 
             }catch(\Exception $e){
