@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- jQuery and DataTables -->
@@ -17,11 +15,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     @stack('styles') {{-- Extra CSS --}}
-</head>
-<body>
-
-    @yield('content') {{-- Main content section --}}
 
     @stack('scripts') {{-- Extra JS scripts --}}
-</body>
-</html>
+
