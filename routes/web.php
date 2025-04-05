@@ -21,11 +21,9 @@ Route::prefix("admin/users")->group(function(){
 });
 
 
-
+Route::resource('items', ItemsController::class)->names("item");
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
-
-
 
 Auth::routes();
 
