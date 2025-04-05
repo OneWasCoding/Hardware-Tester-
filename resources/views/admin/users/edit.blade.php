@@ -212,8 +212,8 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="username" class="form-label">Email Address</label>
-                            <input type="email" name="username" class="form-control" 
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" 
                                    value="{{$account->username}}" required>
                         </div>
                     </div>
@@ -250,7 +250,8 @@
         <div class="popup-content">
             <span class="close-btn" onclick="closePopup()">&times;</span>
             <h3 class="mb-4 text-center">Change Password</h3>
-            <form action="update.php?id={{$account->account_id}}" method="post">
+            <form action="{{route('user.update.password',['id'=>$account->account_id])}}" method="post">
+                @csrf
                 <div class="mb-3">
                     <label for="newpass" class="form-label">New Password</label>
                     <input type="password" class="form-control" name="newpass" required>

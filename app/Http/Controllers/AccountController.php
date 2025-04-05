@@ -40,7 +40,7 @@ class AccountController extends Controller
             'lname' => 'required|min:2|alpha',
             'age' => 'required|numeric|min:18',
             'contact' => 'required|digits:11',     
-            'username' => 'required|email',
+            'email' => 'required|email',
             'password' => 'required|string|min:8',
             'confirm-password' => 'required|same:password',
             'img' => 'mimes:jpeg,jpg,png'
@@ -62,8 +62,8 @@ class AccountController extends Controller
             'contact.required' => 'Contact number is required.',
             'contact.digits' => 'Contact number must be exactly 11 digits.',
         
-            'username.required' => 'Email is required.',
-            'username.email' => 'Please enter a valid email address.',
+            'email.required' => 'Email is required.',
+            'email.email' => 'Please enter a valid email address.',
         
             'password.required' => 'Password is required.',
             'password.string' => 'Password must be a string.',
@@ -79,11 +79,13 @@ class AccountController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }else{
             $filename = $request->hasFile('img') ? $request->file('img')->hashName() : null;
+            $hashpassword=hash::make($request->password);
             try{
                 DB::beginTransaction();
                 $account=new account();
                 $account->username=$request->username;
-                $account->password=$request->password;   
+                $account->email=$request->email;
+                $account->password=$hashpassword;  
             if($account->save()){
                 $last_id=$account->id;
                 $user_info= new user();
@@ -142,12 +144,13 @@ class AccountController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
+        // dd($request->all());
         $rules = [
             'fname' => 'required|min:2',
             'lname' => 'required|min:2|alpha',
             'age' => 'required|numeric|min:18',
             'contact' => 'required|digits:11',     
-            'username' => 'required|email',
             'img' => 'nullable|mimes:jpeg,jpg,png'
         ];
     
@@ -156,7 +159,6 @@ class AccountController extends Controller
             'lname.required' => 'Last name is required.',
             'age.required' => 'Age is required.',
             'contact.required' => 'Contact number is required.',
-            'username.required' => 'Email is required.',
             'img.mimes' => 'Image must be in JPEG, JPG, or PNG format.',
         ];
     
@@ -171,10 +173,12 @@ class AccountController extends Controller
         try {
             $filename = null;
             if ($request->hasFile('img')) {
-                $filename = $request->file('img')->store('user_img', 'public');
+                $filename=$request->file("img")->hashName();
+                $path = $request->file('img')->storeAs('user_img',$filename, 'public');
             }
-    
-            if ($request->has('current_img') && $filename) {
+            
+            // dd($request->img);
+            if ($request->has('current_img') && $request->img!= null) {
                 $old_img = $request->current_img;
                 if ($old_img && Storage::disk('public')->exists('user_img/' . $old_img)) {
                     Storage::disk('public')->delete('user_img/' . $old_img);
@@ -214,4 +218,16 @@ class AccountController extends Controller
     {
         //
     }
+
+    public function update_password(Request $request,$id){
+    if ($request->password != $request->confirm_password) {
+        return redirect()->back()->with('error', 'Password and Confirm Password do not match.');
+    }
+        DB::table('accounts')
+        ->where('account_id', $id)
+        ->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+    return redirect()->back()->with('success', 'Password updated successfully!');    }
 }

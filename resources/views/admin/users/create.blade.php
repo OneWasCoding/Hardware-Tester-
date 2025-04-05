@@ -206,7 +206,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="gender" class="form-label">Gender</label>
+                    <label for="gender" class="form-label">Sex</label>
                     <select id="gender" name="gender" class="form-select" required>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -223,8 +223,13 @@
             <!-- Account Details Section -->
             <div class="form-section" data-step="2">
                 <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" name="username" value="{{old('username')}}" class="form-control" required>
+                </div>
+
+                <div class="form-group">
                     <label for="username" class="form-label">Email Address</label>
-                    <input type="email" id="username" name="username" value="{{old('username')}}" class="form-control" placeholder="user@example.com" required>
+                    <input type="email" id="email" name="email" value="{{old('email')}}" class="form-control" placeholder="user@example.com" required>
                     <div class="invalid-feedback">Please enter a valid email address</div>
                 </div>
 

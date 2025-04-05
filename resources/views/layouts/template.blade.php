@@ -152,19 +152,16 @@
     <div class="sidebar">
         <h2>Admin Panel</h2>
         <ul>
-            <li><a href="http:/resort-ms/admin/index.php"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="http:/resort-ms/admin/booking/index.php?switch="><i class="fas fa-calendar-check"></i> Bookings</a></li>
-            <li><a href="http:/resort-ms/admin/customer/index.php"><i class="fas fa-users"></i> Customers</a></li>
+            <li><a href=""><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="{{route('user.index')}}"><i class="fas fa-users"></i> Users</a></li>
             <li><a href="http:/resort-ms/admin/rooms/index.php"><i class="fas fa-bed"></i> Rooms</a></li>
-            <li><a href="http:/resort-ms/admin/task/task_assigned_list.php"><i class="fas fa-thumbtack"></i>Task</a></li>
-            <li><a href="http:/resort-ms/admin/discount/index.php"><i class="fas fa-tags"></i> Discount</a></li>
             <li><a href="http:/resort-ms/admin/reports/index.php"><i class="fas fa-chart-bar"></i> Reports</a></li>
             <li><a href="http:/resort-ms/admin/activity_logs/index.php"><i class="fas fa-scroll"></i> Activity Logs</a></li>
             <li><a href="http:/resort-ms/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
     <div class="header">
-        <h2>Resort Management System</h2>
+        <h2>Haven Mechanical keyboard</h2>
         <div class="admin-info">
             <i class="fas fa-user"></i> Admin
         </div>

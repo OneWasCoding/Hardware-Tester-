@@ -12,4 +12,5 @@ class category extends Model
     use SoftDeletes;
     public $table="category";
     public $fillable=['category_name'];
+    public $timestamps=true;
 }
