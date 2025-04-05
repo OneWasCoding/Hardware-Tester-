@@ -28,6 +28,12 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/home';
 
+    protected function loggedOut(\Illuminate\Http\Request $request)
+    {
+        return redirect('/login'); // This will redirect to home page
+    }
+
+
     /**
      * Create a new controller instance.
      *
