@@ -9,7 +9,6 @@ use App\Http\Controllers\ItemsController;
 
 require __DIR__.'/user.php';
 require __DIR__.'/admin.php';
-// require __DIR__.'/routes/products.php';
 
 Route::prefix("admin/users")->group(function(){
     Route::get('/index', [UserController::class, "index"])->name("user.index");
@@ -25,17 +24,10 @@ Route::prefix("admin/users")->group(function(){
 Route::resource('items', ItemsController::class)->names("item");
 Route::get('items/restore/{id}', [ItemsController::class, 'restore'])->name('item.restore');
 
-Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::prefix('customer/cart')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
-    Route::post('/add/{itemId}', [CartController::class, 'addToCart'])->name('cart.add');
-    Route::put('/update/{cartId}', [CartController::class, 'updateCart'])->name('cart.update');
-    Route::delete('/clear', [CartController::class, 'clearCart'])->name('cart.clear');
-    Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
-});
+
 
 // Route::middleware(['auth'])->group(function () {
 //     Route::get('/user/profile', [UserController::class, 'show'])->name('user.show');
