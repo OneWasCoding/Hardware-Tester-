@@ -101,9 +101,14 @@ class ItemsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(items $items)
+    public function edit(items $items,$id)
     {
-        //
+        $category = DB::table('category')->get();
+        $item = items::find($id);
+        $item_category = DB::table('item_category')->where('item_id', $id)->first();
+        $item_gallery = DB::table('item_gallery')->where('item_id', $id)->get();
+        $qty=DB::table('stocks')->where('item_id', $id)->first();
+        return view("admin.item.edit", compact('category', 'item', 'item_category', 'item_gallery', 'qty'));
     }
 
     /**
@@ -111,7 +116,56 @@ class ItemsController extends Controller
      */
     public function update(Request $request, items $items)
     {
-        //
+        // dd($request->all());
+        $rules = [
+            "item_name" => 'min:3',
+            "item_price" => "min:5|numeric",
+            "item_qty" => "numeric",
+            'item_img.*' => 'nullable|image|mimes:jpeg,jpg,png'
+        ];
+        
+        $messages = [
+            "item_name.min" => "Product name must be at least 3 characters",
+            "item_price.numeric" => "Price must be a number",
+            "item_price.min" => "Price must be at least 5",
+            'item_img.*.mimes' => 'Only JPG, JPEG or PNG images allowed'
+        ];
+
+        $validator = validator($request->all(), $rules, $messages);
+        
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        } else {
+            DB::transaction(function () use ($request) {
+                $item = items::find($request->item_id);
+                $item->item_name = $request->item_name;
+                $item->item_price = $request->item_price;
+                $item->item_desc = $request->item_desc;
+                $item->item_status = $request->status;
+
+                if ($item->save()) {
+                    DB::table('stocks')->where('item_id', $request->item_id)->update([
+                        'quantity' => $request->stocks,
+                    ]);
+
+                    DB::table('item_category')->where('item_id', $request->item_id)->update([
+                        'category_id' => $request->category
+                    ]);
+
+                    if ($request->hasFile('images')) {
+                        foreach ($request->file('images') as $images) {
+                            $filename = $images->hashName();
+                            $images->storeAs('item_gallery', $filename, 'public');
+                            DB::table('item_gallery')->insert([
+                                'item_id' => $request->item_id,
+                                'img_name' => $filename
+                            ]);
+                        }
+                    }
+                }
+            });
+        }
+        return redirect()->route('item.index')->with("success", "Item Updated Successfully");
     }
 
     /**
