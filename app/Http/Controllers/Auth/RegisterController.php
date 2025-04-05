@@ -62,7 +62,7 @@ class RegisterController extends Controller
     protected function create(Request $request)
     {
         // Handle the image upload
-g        $filename = null;
+        $filename = null;
         if ($request->hasFile('profile_picture')) {
             $filename = $request->file('profile_picture')->hashName();
         }
