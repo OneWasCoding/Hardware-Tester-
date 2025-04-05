@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("item_name")->unique();
             $table->double("item_price",8,2);
             $table->string("item_desc")->nullable();
-            $table->enum("item_status",['available','out_of_stock']);
+            $table->enum("item_status",['available','out_of_stock'])->default("available");
             $table->timestamps();
         });
     }

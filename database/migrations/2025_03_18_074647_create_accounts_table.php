@@ -13,6 +13,9 @@ return new class extends Migration
             $table->id("account_id"); 
             $table->string("username")->unique();
             $table->string("password");
+            $table->enum('role', ['admin', 'user'])->default('user');
+            $table->string("email")->unique();
+            $table->enum("status",['active','inactive'])->default('active');    
             $table->softDeletes();
         });
     }
