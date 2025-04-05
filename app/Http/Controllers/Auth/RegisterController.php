@@ -62,9 +62,9 @@ class RegisterController extends Controller
     protected function create(Request $request)
     {
         // Handle the image upload
-        $filename = null;
-        if ($request->hasFile('img')) {
-            $filename = $request->file('img')->hashName();
+g        $filename = null;
+        if ($request->hasFile('profile_picture')) {
+            $filename = $request->file('profile_picture')->hashName();
         }
 
         // Hash the password
@@ -97,7 +97,7 @@ class RegisterController extends Controller
 
             // Store the image if provided
             if ($filename) {
-                $path = $request->file('img')->storeAs('user_img', $filename, 'public');
+                $path = $request->file('profile_picture')->storeAs('user_img', $filename, 'public');
                 if (!$path) {
                     throw new \Exception('Failed to store the image.');
                 }

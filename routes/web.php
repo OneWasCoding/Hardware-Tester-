@@ -7,6 +7,9 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemsController;
 
+require __DIR__.'/user.php';
+require __DIR__.'/admin.php';
+// require __DIR__.'/routes/products.php';
 
 Route::prefix("admin/users")->group(function(){
     Route::get('/index', [UserController::class, "index"])->name("user.index");
@@ -34,7 +37,9 @@ Route::prefix('customer/cart')->group(function () {
     Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/user/profile', [UserController::class, 'show'])->name('user.show');
-    Route::put('/user/update', [UserController::class, 'update'])->name('user.update');
-});
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/user/profile', [UserController::class, 'show'])->name('user.show');
+//     Route::put('/user/update', [UserController::class, 'update'])->name('user.update');
+// });
+
+
