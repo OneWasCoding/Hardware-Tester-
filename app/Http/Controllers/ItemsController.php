@@ -117,8 +117,24 @@ class ItemsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(items $items)
+    public function destroy($id)
     {
-        //
+        // dd($id);
+        $del=items::find($id);
+        if($del->delete($del)){ 
+            return redirect()->back()->with("success", "Item Deleted Successfully");
+        } else {
+            return redirect()->back()->with("error", "Failed to delete item");
+        }
+    }
+
+    public function restore($id){
+        $restore = items::withTrashed()->find($id);
+        if ($restore) {
+            $restore->restore();
+            return redirect()->back()->with("success", "Item Restored Successfully");
+        } else {
+            return redirect()->back()->with("error", "Failed to restore item");
+        }
     }
 }

@@ -20,19 +20,21 @@ class itemsDataTable extends DataTable
      * @param QueryBuilder $query Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
-    {
-       return (new EloquentDataTable($query))
-       ->addColumn('action', function ($row) {
-           return view('layouts.action', [
-               'model' => $row,
-               'routePrefix' => 'item', // Change this to match your resource
-               'id'=>$row->id,
-                'editRoute' => route('item.edit', $row->id),
-               'isTrashed' => method_exists($row, 'trashed') ? $row->trashed() : false
-           ]);
-       })
-       ->setRowId('id');
-    }
+{
+    return (new EloquentDataTable($query))
+        ->addColumn('action', function ($row) {
+                // Render Restore button for soft-deleted records
+                return view('layouts.action', [
+                    'delete_mark' => $row->deleted_at,
+                    'model' => $row,
+                    'routePrefix' => 'item',
+                    'id' => $row->id,
+                    'isTrashed' => true // Indicate that the record is soft-deleted
+                ]);
+            
+        })
+        ->setRowId('id');
+}
 
     /**
      * Get the query source of dataTable.
@@ -40,6 +42,7 @@ class itemsDataTable extends DataTable
     public function query(items $model): QueryBuilder
     {
         return $model->newQuery()
+        ->withTrashed()
         ->join('item_category', 'items.item_id', '=', 'item_category.item_id')
         ->join('category', 'item_category.category_id', '=', 'category.category_id')
         ->join('stocks', 'items.item_id', '=', 'stocks.item_id')
@@ -48,7 +51,8 @@ class itemsDataTable extends DataTable
             'items.item_name AS Item Name',
             'items.item_price AS Price',
             'category.category_name AS Category',
-            'stocks.quantity AS Stock'
+            'stocks.quantity AS Stock',
+            'items.deleted_at AS deleted_at', // Include deleted_at for soft-deleted records
         ]);
     } // <-- Missing closing bracket added here
 
