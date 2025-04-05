@@ -22,6 +22,7 @@ Route::prefix("admin/users")->group(function(){
 
 
 Route::resource('items', ItemsController::class)->names("item");
+Route::get('items/restore/{id}', [ItemsController::class, 'restore'])->name('item.restore');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
 
