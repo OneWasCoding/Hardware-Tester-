@@ -23,6 +23,7 @@ To install and ensure that Laravel is version ^11.0, follow these steps:
    composer require "maatwebsite/excel:^3.1"
    composer require yajra/laravel-datatables-oracle
    composer require yajra/laravel-datatables-buttons
+   composer require laravel/ui
 
 +-------------------------------------------------------------------------------------------------------------+
 
