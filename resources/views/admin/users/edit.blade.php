@@ -164,7 +164,7 @@
                     @method('PUT')
                     <div class="profile-header">
                         <div class="profile-photo-container">
-                            <img src="{{asset('storage/user_img/'.$user->img)}}"
+                            <img src="{{asset('storage/'.$user->img)}}"
                                  alt="Profile Photo" 
                                  class="profile-photo">
                             <label for="file-upload" class="photo-upload">

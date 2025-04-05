@@ -15,6 +15,7 @@ Route::prefix("admin/users")->group(function(){
     Route::get('/edit/{id}', [AccountController::class, "edit"])->name("user.edit");
     Route::put('/update/{id}',[AccountController::class,"update"])->name("user.update");
     Route::delete('/destroy/{id}', [AccountController::class, "destroy"])->name("user.destroy"); // Fixed
+    Route::post('/update_password/{id}', [AccountController::class, "update_password"])->name("user.update.password");
 });
 
 
