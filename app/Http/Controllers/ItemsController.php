@@ -62,8 +62,7 @@ class ItemsController extends Controller
                 $item->item_status = $request->productStatus;
 
                 if ($item->save()) {
-                    $last_id = $item->id;
-
+                    $last_id = $last_id = DB::getPdo()->lastInsertId();  // Get the last inserted ID manually
                     DB::table('stocks')->insert([
                         'item_id'=>$last_id,
                         'quantity'=>$request->item_qty,
