@@ -9,13 +9,12 @@ class CartController extends Controller
 {
     public function index()
     {
-        // Assuming the user is authenticated
-        // $userId = auth()->id();
-        // $cartItems = Cart::with('item')->where('user_id', $userId)->get();
+        $userId = auth()->id();
+        $cartItems = Cart::with('item')->where('user_id', $userId)->get();
 
-        return view('cart.index', compact('cartItems'));
+        return view('customer.cart.index', compact('cartItems'));
     }
-
+}
     // public function addToCart(Request $request, $itemId)
     // {
     //     $userId = auth()->id();
@@ -74,4 +73,3 @@ class CartController extends Controller
 
     //     return redirect()->back()->with('success', 'Item removed from cart!');
     // }
-}
