@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\DataTables\userDataTable;
 use App\Models\user;
 use Illuminate\Http\Request;
+use App\DataTables\userDataTable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -33,12 +35,14 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     */
-    public function show(user $user)
+     */  
+    public function viewProfile()
     {
-        //
+        $account = Auth::user(); // returns logged in Account model
+        $user = $account->user;  // uses the hasOne() relationship
+    
+        return view('customer.profile.view', compact('user'));
     }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -50,11 +54,42 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, user $user)
-    {
-        //
-    }
+    // public function update(Request $request)
+    // {
+    //     $user = Auth::user();
+        
+    //     $request->validate([
+    //         'fname' => 'required|string|max:255',
+    //         'lname' => 'required|string|max:255',
+    //         'age' => 'required|numeric|min:18',
+    //         'gender' => 'required|in:male,female,other',
+    //         'contact' => 'required|string|max:255',
+    //         'img' => 'nullable|image|mimes:jpeg,jpg,png|max:2048'
+    //     ]);
 
+    //     $userData = [
+    //         'fname' => $request->fname,
+    //         'lname' => $request->lname,
+    //         'age' => $request->age,
+    //         'gender' => $request->gender,
+    //         'contact' => $request->contact,
+    //     ];
+
+    //     if ($request->hasFile('img')) {
+    //         if ($user->img) {
+    //             Storage::disk('public')->delete('profile_images/' . $user->img);
+    //         }
+
+    //         $image = $request->file('img');
+    //         $filename = time() . '.' . $image->getClientOriginalExtension();
+    //         $image->storeAs('profile_images', $filename, 'public');
+    //         $userData['img'] = $filename;
+    //     }
+
+    //     $user->update($userData);
+
+    //     return redirect()->back()->with('success', 'Profile updated successfully!');
+    // }
     /**
      * Remove the specified resource from storage.
      */
