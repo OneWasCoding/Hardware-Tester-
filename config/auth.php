@@ -59,18 +59,13 @@ return [
     |
     */
 
-    'providers' => [
-        'account' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\account::class),
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+'providers' => [
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Account::class,
+        'auth_identifier' => 'account.email', // Custom identifier
     ],
-
+],
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords

@@ -19,7 +19,19 @@ class User extends Authenticatable
         return $this->belongsTo(Account::class, 'account_id');
     }
 
-    // Override the method to fetch email from the accounts table
+    // Override the method to get the email from the related account
+    public function getEmailAttribute()
+    {
+        return $this->account->email;
+    }
+
+    // Override the method to fetch email for authentication
+    public function getAuthIdentifierName()
+    {
+        return 'account.email';
+    }
+
+    // Override the method to fetch email for password reset
     public function getEmailForPasswordReset()
     {
         return $this->account->email;
