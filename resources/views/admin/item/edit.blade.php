@@ -16,7 +16,7 @@
             <label for="name" class="form-label">Item Name</label>
             <input 
                 type="text" 
-                name="name" 
+                name="item_name" 
                 id="name" 
                 class="form-control" 
                 value="{{ old('name', $item->item_name) }}" 
@@ -28,7 +28,7 @@
         <div class="form-group mb-4">
             <label for="description" class="form-label">Description</label>
             <textarea 
-                name="description" 
+                name="item_desc" 
                 id="description" 
                 class="form-control" 
                 rows="4" 
@@ -41,7 +41,7 @@
             <label for="price" class="form-label">Price</label>
             <input 
                 type="number" 
-                name="price" 
+                name="item_price" 
                 id="price" 
                 class="form-control" 
                 value="{{ old('price', $item->item_price) }}" 
@@ -83,7 +83,7 @@
         <div class="form-group mb-4">
             <label for="category" class="form-label">Category</label>
             <select 
-                name="category_id" 
+                name="category" 
                 id="category" 
                 class="form-control" 
                 required>
