@@ -32,3 +32,8 @@ Route::prefix('customer/cart')->group(function () {
     Route::delete('/clear', [CartController::class, 'clearCart'])->name('cart.clear');
     Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user/profile', [UserController::class, 'show'])->name('user.show');
+    Route::put('/user/update', [UserController::class, 'update'])->name('user.update');
+});
