@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\items;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ItemImport;
 use App\DataTables\ItemsDataTable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -189,5 +191,23 @@ class ItemsController extends Controller
         } else {
             return redirect()->back()->with("error", "Failed to restore item");
         }
+    }
+
+    public function delete($id){
+        $delete = items::withTrashed()->find($id);
+        if ($delete) {
+            $delete->forceDelete();
+            return redirect()->back()->with("success", "Item Deleted Successfully");
+        } else {
+            return redirect()->back()->with("error", "Failed to delete item");
+        }
+    }
+
+    public function import(Request $request)
+    {
+
+        Excel::import(new ItemImport, $request->file('file')->store('temp'));
+
+        return redirect()->back()->with("success", "Items Imported Successfully");
     }
 }

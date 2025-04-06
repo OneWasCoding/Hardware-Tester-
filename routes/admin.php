@@ -25,6 +25,7 @@ Route::prefix("admin/users")->group(function(){
 Auth::routes();
 
 Route::resource('items', ItemsController::class)->names("item");
+Route::post('item/import', [ItemsController::class, 'import'])->name('item.import')->middleware(Admin::class);
 Route::get('items/restore/{id}', [ItemsController::class, 'restore'])->name('item.restore');
 
 ?>
