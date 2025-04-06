@@ -165,6 +165,110 @@
         border-radius: 0.75rem;
         margin-bottom: 2rem;
     }
+    
+/* Pagination Styling - Fix for large icons */
+.pagination svg {
+    width: 1.2rem; /* Adjust this value as needed */
+    height: 1.2rem; /* Adjust this value as needed */
+    font-size: 1.2rem; /* Adjust this value to set the icon size */
+}
+
+.pagination .page-item {
+    margin: 0 2px;
+}
+
+.pagination .page-link {
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Pagination Styling */
+.pagination-container {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pagination {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.page-item {
+    margin: 0;
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--gray-light);
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: var(--transition);
+    background-color: white;
+    text-decoration: none;
+}
+
+.page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.page-item.disabled .page-link {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.page-link:hover:not(.disabled) {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-info {
+    color: #6c757d;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Navigation arrows */
+.page-nav {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.page-nav i {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Ellipsis styling */
+.page-ellipsis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    color: #6c757d;
+}
+
 </style>
 
 <!-- Hero Section -->
@@ -213,12 +317,12 @@
             <div class="form-group">
                 <label class="form-label">Min Price</label>
                 <input type="number" name="min_price" value="{{ request('min_price') }}" 
-                       class="form-control" placeholder="$0">
+                       class="form-control" placeholder="₱0">
             </div>
             <div class="form-group">
                 <label class="form-label">Max Price</label>
                 <input type="number" name="max_price" value="{{ request('max_price') }}" 
-                       class="form-control" placeholder="$1000">
+                       class="form-control" placeholder="₱1000">
             </div>
             <div class="form-group">
                 <label class="form-label">Category</label>
@@ -279,10 +383,70 @@
                 @endforeach
             </div>
 
-            <!-- Pagination -->
-            <div class="mt-4">
-                {{ $items->appends(request()->input())->links() }}
-            </div>
+<!-- Pagination with FontAwesome icons -->
+<!-- Improved Pagination -->
+<div class="pagination-container">
+    @if ($items->total() > 0)
+        <div class="pagination-info">
+            Showing {{ $items->firstItem() }}-{{ $items->lastItem() }} of {{ $items->total() }} items
+        </div>
+        
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {{-- Previous Page Link --}}
+                <li class="page-item {{ $items->onFirstPage() ? 'disabled' : '' }}">
+                    <a class="page-link page-nav" href="{{ $items->previousPageUrl() }}" aria-label="Previous" {{ $items->onFirstPage() ? 'tabindex="-1"' : '' }}>
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+
+                @php
+                    $start = max(1, $items->currentPage() - 2);
+                    $end = min($start + 4, $items->lastPage());
+                    $start = max(1, $end - 4);
+                @endphp
+
+                {{-- First Page + Ellipsis --}}
+                @if($start > 1)
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $items->url(1) }}">1</a>
+                    </li>
+                    @if($start > 2)
+                        <li class="page-ellipsis">
+                            <span>...</span>
+                        </li>
+                    @endif
+                @endif
+
+                {{-- Page Numbers --}}
+                @for ($i = $start; $i <= $end; $i++)
+                    <li class="page-item {{ $i == $items->currentPage() ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $items->url($i) }}">{{ $i }}</a>
+                    </li>
+                @endfor
+
+                {{-- Last Page + Ellipsis --}}
+                @if($end < $items->lastPage())
+                    @if($end < $items->lastPage() - 1)
+                        <li class="page-ellipsis">
+                            <span>...</span>
+                        </li>
+                    @endif
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $items->url($items->lastPage()) }}">{{ $items->lastPage() }}</a>
+                    </li>
+                @endif
+
+                {{-- Next Page Link --}}
+                <li class="page-item {{ $items->hasMorePages() ? '' : 'disabled' }}">
+                    <a class="page-link page-nav" href="{{ $items->nextPageUrl() }}" aria-label="Next" {{ $items->hasMorePages() ? '' : 'tabindex="-1"' }}>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    @endif
+</div>
         @else
             <p>No items found matching your search.</p>
         @endif
