@@ -144,18 +144,19 @@
                                 </li>
                             @endif
                         @else
+                        <li class="nav-item position-relative me-3">
+                            <a class="nav-link" href="{{ route('home') }}">
+                                <i class="fa-solid fa-store"></i>
+                                <span class="badge"></span>
+                            </a>
+                        </li>
                             <li class="nav-item position-relative me-3">
                                 <a class="nav-link" href="{{ route('cart.index') }}">
                                     <i class="fas fa-shopping-cart"></i>
                                     <span class="badge"></span>
                                 </a>
                             </li>
-                            <li class="nav-item position-relative me-3">
-                                <a class="nav-link" href="{{ route('cart.index') }}">
-                                    <i class="fas fa-bell"></i>
-                                    <span class="badge">2</span>
-                                </a>
-                            </li>
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=2563eb&color=fff" 
