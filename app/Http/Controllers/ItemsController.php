@@ -316,7 +316,7 @@ class ItemsController extends Controller
             ->exists();
     
         if (!$hasCompletedOrder) {
-            return redirect()->route('item.show', $item_id)->with('error', 'You must have a completed order for this item to leave a review.');
+            return redirect()->route('items.show', $item_id)->with('error', 'You must have a completed order for this item to leave a review.');
         }
     
         // Store the review if the user has a completed order
