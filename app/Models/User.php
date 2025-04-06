@@ -11,7 +11,7 @@ class User extends Authenticatable
 
     public $table = "users";
     public $primaryKey = "user_id";
-    public $fillable = ["account_id", "fname", "lname", "age", "gender", "img", "contact", "created_at", "updated_at"];
+    public $fillable = ["account_id", "fname", "lname", "age", "gender", "img", "contact", "created_at", "updated_at", "address"];
 
     // Define the relationship to the Account model
     public function account()
