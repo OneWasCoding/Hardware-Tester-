@@ -12,7 +12,7 @@
 </style>
 @section('content')
 <div class="content">
-    <h2 class="mb-4" id='user_header'>Users List</h2>
+    <h2 class="mb-4" id='user_header' style="color:rgb(100, 100, 224)">Users List</h2>
     
     <div class="card">
         <div class="card-body">

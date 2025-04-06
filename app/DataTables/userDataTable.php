@@ -6,6 +6,7 @@ use App\Models\user;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -45,7 +46,15 @@ class UserDataTable extends DataTable
      */
     public function query(user $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()
+        ->join('accounts', 'users.account_id', '=', 'accounts.account_id')
+        ->select([
+            'users.account_id AS account_id',
+            \DB::raw('CONCAT(users.fname, " ", users.lname) AS Name'),
+            'accounts.username AS Username',
+            'accounts.email AS Email',
+            'accounts.role as Role',
+        ]);
     }
 
     /**
@@ -76,12 +85,11 @@ class UserDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-                  Column::make('user_id')->width(150)->addClass('text-center'),
-                  Column::make('fname')->width(150)->addClass('text-center'),
-                  Column::make('lname')->width(150)->addClass('text-center'),
-                  Column::make('created_at')->width(200)->addClass('text-center'),
-                  Column::make('updated_at')->width(200)->addClass('text-center'),
-                   Column::computed('action')
+                  Column::make('Name')->width(150)->addClass('text-center'),
+                  Column::make('Username')->width(200)->addClass('text-center'),
+                  Column::make('Email')->width(200)->addClass('text-center'),
+                  Column::make('Role')->width(200)->addClass('text-center'),
+                    Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
                   ->width(60)
