@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\OrdersController;
 use Illuminate\Auth\Events\Login;
 
 
@@ -27,5 +28,8 @@ Auth::routes();
 Route::resource('items', ItemsController::class)->names("item");
 Route::post('item/import', [ItemsController::class, 'import'])->name('item.import')->middleware(Admin::class);
 Route::get('items/restore/{id}', [ItemsController::class, 'restore'])->name('item.restore');
+
+Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index')->middleware(Admin::class);
+Route::get('/order_status/{id}', [OrdersController::class, 'status_update'])->name('orders.status')->middleware(Admin::class);
 
 ?>
