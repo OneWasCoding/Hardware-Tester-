@@ -36,4 +36,9 @@ class User extends Authenticatable
     {
         return $this->account->email;
     }
+
+public function carts()
+{
+    return $this->hasMany(Cart::class, 'user_id'); // Linking to the 'cart' model
+}
 }
