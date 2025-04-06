@@ -124,18 +124,33 @@
                 @foreach ($items as $item)
                     <div class="col-md-4 mb-4">
                         <div class="card">
-                            <!-- Display the image if it exists -->
-                            @if($item->image)
-                                <img src="{{ asset('storage/item_gallery/' . $item->image) }}" class="card-img-top" alt="{{ $item->item_name }}">
-                            @else
-                                <img src="{{ asset('storage/item_gallery/default.jpg') }}" class="card-img-top" alt="{{ $item->item_name }}">
-                            @endif
+                            <!-- Make the image clickable, linking to the item details page -->
+                            <a href="{{ route('item.show', $item->item_id) }}">
+                                <!-- Display the image if it exists -->
+                                @if($item->image)
+                                    <img src="{{ asset('storage/item_gallery/' . $item->image) }}" class="card-img-top" alt="{{ $item->item_name }}">
+                                @else
+                                    <img src="{{ asset('storage/item_gallery/default.jpg') }}" class="card-img-top" alt="{{ $item->item_name }}">
+                                @endif
+                            </a>
     
                             <div class="card-body">
                                 <h5 class="card-title">{{ $item->item_name }}</h5>
                                 <p class="card-text">{{ $item->item_desc }}</p>
                                 <p class="card-text">Price: ${{ number_format($item->item_price, 2) }}</p>
-                                <a href="#" class="btn btn-primary">Add to Cart</a>
+    
+                                <!-- Stock Quantity (Read-only) -->
+                                <p class="card-text"><strong>In Stock:</strong> {{ $item->stock_quantity }}</p>
+    
+                                <!-- Form for adding to cart -->
+                                <form action="{{ route('cart.add', $item->item_id) }}" method="POST">
+                                    @csrf
+                                    
+                                    <input type="number" name="quantity" value="1" min="1" max="{{ $item->stock_quantity }}" class="form-control mb-3" style="width: 60px;" >
+    
+                                    <!-- Add to Cart Button -->
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -143,6 +158,10 @@
             </div>
         </div>
     </section>
+    
+    
+
+    
     
     
     {{-- <!-- Special Offers -->
