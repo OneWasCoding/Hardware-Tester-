@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\items;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ItemImport;
+use App\DataTables\ItemDataTable;
 use App\DataTables\ItemsDataTable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
