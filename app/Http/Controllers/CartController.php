@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\orders;
+use App\Models\order_lines;
 use App\Models\items;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -75,7 +77,7 @@ public function addToCart(Request $request, $itemId)
             DB::table('cart')->insert([
                 'user_id' => $userId,
                 'item_id' => $itemId,
-                'quantity' => 1,  // Initial quantity
+                'quantity' => $request->quantity,  // Initial quantity
                 'created_at' => now(),  // Set the created_at timestamp
                 'updated_at' => now(),  // Set the updated_at timestamp
             ]);
@@ -161,4 +163,72 @@ public function update(Request $request)
     //     $cartItem->delete();
 
     //     return redirect()->back()->with('success', 'Item removed from cart!');
-     }
+
+
+    
+    public function checkout(Request $request, Cart $cart)
+    {
+        // dd(Auth::id());
+     $cart=DB::table('cart')
+            ->join('users', 'cart.user_id', '=', 'users.user_id')
+     ->join('accounts', 'users.account_id', '=', 'accounts.account_id')
+            ->join('items', 'cart.item_id', '=', 'items.item_id')
+            ->leftJoin('item_gallery', 'cart.item_id', '=', 'item_gallery.item_id')
+            ->join('stocks', 'items.item_id', '=', 'stocks.item_id')
+            ->where('cart.user_id', Auth::id())
+            ->select(
+                'accounts.account_id',
+                'cart.cart_id',
+                'cart.item_id',
+                'items.item_name',
+                'items.item_desc',
+                'items.item_price',
+                'cart.quantity as quantity',
+            )
+            ->groupBy(
+                'accounts.account_id',
+                'cart.quantity',
+                'cart.cart_id',
+                'cart.item_id',
+                'items.item_name',
+                'items.item_desc',
+                'items.item_price',
+                'stocks.quantity'
+            )->get();
+            // dd($cart);
+        $total = 0;
+        foreach ($cart as $item) {
+            $total += $item->item_price * $item->quantity;
+        }
+        
+        $order= new orders();
+        $order->account_id=$cart[0]->account_id; 
+        $order->total_amount=$total;
+        $order->order_status='pending';
+        $order->shipping_address='sa bahay nyo';
+        $order->save();
+        $order_id=$order->order_id;
+
+        foreach ($cart as $item) {
+            $order_line= new order_lines();
+            $order_line->order_id=$order_id;
+            $order_line->item_id=$item->item_id;
+            $order_line->order_qty=$item->quantity;
+            $order_line->price=$item->item_price;
+            $order_line->save();
+        } 
+        
+        // Clear the cart after checkout
+        DB::table('cart')
+            ->where('user_id', Auth::id())
+            ->delete();
+        
+
+
+        // Process the checkout logic here
+        // For example, create an order, charge the user, etc.
+
+        return redirect()->route('cart.index')->with('success', 'Checkout successful! Total: ' . $total);
+    }
+   
+}
