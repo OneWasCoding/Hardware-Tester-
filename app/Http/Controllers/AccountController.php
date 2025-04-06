@@ -62,13 +62,13 @@ class AccountController extends Controller
    
    public function update(Request $request, string $id)
    {
-       //
+    //    dd($request->all());
        $rules = [
            'fname' => 'required|min:2',
            'lname' => 'required|min:2|alpha',
            'age' => 'required|numeric|min:18',
            'contact' => 'required|digits:11',     
-           'username' => 'required|email',
+           'username' => 'required|',
            'img' => 'nullable|mimes:jpeg,jpg,png'
        ];
    
