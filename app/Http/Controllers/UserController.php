@@ -59,11 +59,12 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-       // dd($request->file('img'));
-        $account = Auth::user();         // logged in account
-        $user = $account->user;          // related user
+        $account = Auth::user();         // Logged-in account
+        $user = $account->user;          // Related user
     
         $request->validate([
+            'username' => 'required|string|max:255|unique:accounts,username,' . $account->account_id . ',account_id',
+            'email' => 'required|email|max:255|unique:accounts,email,' . $account->account_id . ',account_id',
             'fname' => 'required|string|max:255',
             'lname' => 'required|string|max:255',
             'age' => 'required|integer|min:1',
@@ -74,8 +75,11 @@ class UserController extends Controller
             'password' => 'nullable|min:8|confirmed',
         ]);
     
-        // Update user fields
+        // Update account fields
         $account->username = $request->username;
+        $account->email = $request->email;
+    
+        // Update user fields
         $user->fname = $request->fname;
         $user->lname = $request->lname;
         $user->age = $request->age;
@@ -83,31 +87,29 @@ class UserController extends Controller
         $user->contact = $request->contact;
         $user->address = $request->address;
     
-        // Properly store the uploaded image
+        // Handle image upload
         if ($request->hasFile('img')) {
             $file = $request->file('img');
-            $filename = $file->hashName(); // unique name
-        
-            // Save to storage/app/public/user_img
+            $filename = $file->hashName();
             $path = $file->storeAs('user_img', $filename, 'public');
-        
+    
             if ($path) {
                 $user->img = $filename;
             } else {
                 return redirect()->back()->with('error', 'Image upload failed.');
             }
         }
-        
-    
-        $user->save();
     
         // Update password if provided
         if ($request->filled('password')) {
             $account->password = Hash::make($request->password);
-            $account->save();
         }
     
-        return redirect()->route('profile.view')->with('success', 'Profile updated successfully.');
+        // Save changes
+        $account->save();
+        $user->save();
+    
+        return redirect()->route('profile.view')->with('success', 'Profile updated successfully!');
     }
     
     /**
