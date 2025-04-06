@@ -12,7 +12,7 @@ require __DIR__.'/user.php';
 require __DIR__.'/admin.php';
 
 Route::get('/', function () {
-    return Redirect::route('home');
+    return Redirect::route('login');
 });
 
 

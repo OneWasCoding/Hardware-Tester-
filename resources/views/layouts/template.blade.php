@@ -147,6 +147,51 @@
             animation: pulse 1s;
         }
         
+        /* Styled logout button */
+        .logout-btn {
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            text-align: left;
+            padding: 12px 15px;
+            margin: 8px 15px;
+            border-radius: 8px;
+            color: #5a6a8a;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            font-size: 1.1em;
+            color: #6d8ed3;
+        }
+        
+        .logout-btn:hover {
+            background: #f0f4fb;
+            transform: translateX(5px);
+            border-left: 4px solid #4a6baf;
+            color: #4a6baf;
+        }
+        
+        .logout-btn:hover i {
+            color: #4a6baf;
+        }
+        
+        .logout-btn:active {
+            animation: pulse 1s;
+        }
+        
+        .sidebar form {
+            margin: 0;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
@@ -158,7 +203,14 @@
             <li><a href="{{route('item.index')}}"><i class="fas fa-bed"></i> Items</a></li>
             <li><a href="http:/resort-ms/admin/reports/index.php"><i class="fas fa-chart-bar"></i> Reports</a></li>
             <li><a href="http:/resort-ms/admin/activity_logs/index.php"><i class="fas fa-scroll"></i> Activity Logs</a></li>
-            <li><a href="http:/resort-ms/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
+            </li>
         </ul>
     </div>
     <div class="header">
