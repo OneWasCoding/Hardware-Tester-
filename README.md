@@ -25,6 +25,13 @@ To install and ensure that Laravel is version ^11.0, follow these steps:
    composer require yajra/laravel-datatables-buttons
    composer require laravel/ui
    composer require spatie/laravel-ignition --no-interaction
+   composer require laravel/scout
+
+
+   bash:
+   php artisan vendor:public --provider="Laravel\Scout\ScoutServiceProvider"
+    php artisan scout:import "App\Models\items"
+
 
 +-------------------------------------------------------------------------------------------------------------+
 

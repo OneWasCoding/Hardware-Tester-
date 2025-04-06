@@ -26,9 +26,8 @@
                         <td><img src="{{ asset('storage/item_gallery/' . $cartItem->img_name) }}" alt="{{ $cartItem->item_name }}" style="width: 50px; height: auto;"></td>
                         <td>{{ $cartItem->item_name }}</td>
                         <td>{{ $cartItem->item_desc }}</td>
-                        <td>${{ number_format($cartItem->item_price, 2) }}</td>
+                        <td>₱{{ number_format($cartItem->item_price, 2) }}</td>
                         <td>
-                            <!-- Input field to edit quantity with max attribute set to available stock -->
                             <input type="number" 
                                    name="quantity[{{ $cartItem->cart_id }}]" 
                                    value="{{ min($cartItem->quantity, $cartItem->stock_quantity ?? 0) }}" 
@@ -48,9 +47,8 @@
                                 </div>
                             @endif
                         </td>
-                        <td>${{ number_format($cartItem->item_price * min($cartItem->quantity, $cartItem->stock_quantity ?? $cartItem->quantity), 2) }}</td>
+                        <td>₱{{ number_format($cartItem->item_price * min($cartItem->quantity, $cartItem->stock_quantity ?? $cartItem->quantity), 2) }}</td>
                         <td>
-                            <!-- Delete button is now just a link that will submit via JavaScript -->
                             <button type="button" class="btn btn-danger delete-item" data-id="{{ $cartItem->cart_id }}">
                                 <i class="fa fa-trash"></i>
                             </button>
@@ -111,7 +109,6 @@
             
             // Quantity validation against stock
             quantityInputs.forEach(input => {
-                // Check on input change
                 input.addEventListener('input', function() {
                     validateQuantity(this);
                 });
@@ -135,13 +132,13 @@
                 const priceCell = row.querySelector('td:nth-child(4)');
                 const totalCell = row.querySelector('td:nth-child(6)');
                 
-                // Extract price (remove $ and convert to number)
-                const price = parseFloat(priceCell.textContent.replace('$', '').replace(',', ''));
+                // Extract price (remove ₱ and convert to number)
+                const price = parseFloat(priceCell.textContent.replace('₱', '').replace(',', ''));
                 const quantity = parseInt(input.value) || 0;
                 
-                // Update total
+                // Update total with peso sign
                 const total = price * quantity;
-                totalCell.textContent = '$' + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                totalCell.textContent = '₱' + total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             }
         });
     </script>
