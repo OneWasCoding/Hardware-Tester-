@@ -23,25 +23,43 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch all items
-        $items = items::all();
+        $categories = DB::table('category')->get();
     
-        // Fetch the image for each item from the item_gallery table and stock data
-        foreach ($items as $item) {
-            // Fetch the image for the item
-            $item->image = DB::table('item_gallery')
-                             ->where('item_id', $item->item_id)
-                             ->value('img_name');  // Fetch the img_name for each item
-            
-            // Fetch the stock quantity for each item
-            $stock = DB::table('stocks')
-                       ->where('item_id', $item->item_id)
-                       ->value('quantity');  // Fetch the quantity from stocks table
-            $item->stock_quantity = $stock ? $stock : 0;  // Add stock quantity to the item object
+        // Base query
+        $query = DB::table('items')
+            ->select('items.*')
+            ->leftJoin('item_category', 'items.item_id', '=', 'item_category.item_id');
+    
+        // Apply filters
+        if ($request->filled('min_price') && $request->filled('max_price')) {
+            $query->whereBetween('item_price', [
+                $request->input('min_price'),
+                $request->input('max_price'),
+            ]);
         }
-        
-        return view('home', compact('items'));
+    
+        if ($request->filled('category_id')) {
+            $query->where('item_category.category_id', $request->input('category_id'));
+        }
+    
+        $query->distinct(); // Avoid duplicate rows due to joins
+    
+        $items = $query->get();
+    
+        // Attach image and stock info
+        foreach ($items as $item) {
+            $item->image = DB::table('item_gallery')
+                            ->where('item_id', $item->item_id)
+                            ->value('img_name');
+    
+            $item->stock_quantity = DB::table('stocks')
+                                ->where('item_id', $item->item_id)
+                                ->value('quantity') ?? 0;
+        }
+    
+        return view('home', compact('items', 'categories'));
     }
+    
 }

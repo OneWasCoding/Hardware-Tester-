@@ -87,33 +87,26 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-{{-- 
-    <!-- Categories Section -->
-    <section class="mb-5">
-        <h2 class="mb-4">Shop by Category</h2>
-        <div class="row g-4">
-            @php
-                $categories = [
-                    ['name' => 'Electronics', 'icon' => 'fas fa-laptop', 'image' => 'https://via.placeholder.com/300x150'],
-                    ['name' => 'Fashion', 'icon' => 'fas fa-tshirt', 'image' => 'https://via.placeholder.com/300x150'],
-                    ['name' => 'Home & Living', 'icon' => 'fas fa-home', 'image' => 'https://via.placeholder.com/300x150'],
-                    ['name' => 'Beauty', 'icon' => 'fas fa-spa', 'image' => 'https://via.placeholder.com/300x150']
-                ];
-            @endphp --}}
 
-            {{-- @foreach($categories as $category)
-            <div class="col-md-3">
-                <div class="category-card card">
-                    <img src="{{ $category['image'] }}" class="category-img" alt="{{ $category['name'] }}">
-                    <div class="card-body text-center">
-                        <i class="{{ $category['icon'] }} fa-2x mb-2 text-primary"></i>
-                        <h5 class="card-title mb-0">{{ $category['name'] }}</h5>
-                    </div>
-                </div>
-            </div>
+    <!-- Filtering Form -->
+    <form action="{{ route('home') }}" method="GET" class="d-flex align-items-center gap-2">
+        <input type="number" name="min_price" placeholder="Min Price" value="{{ request('min_price') }}" class="form-control" />
+        <input type="number" name="max_price" placeholder="Max Price" value="{{ request('max_price') }}" class="form-control" />
+    
+        <select name="category_id" class="form-control">
+            <option value="">All Categories</option>
+            @foreach ($categories as $category)
+                <option value="{{ $category->category_id }}" {{ request('category_id') == $category->category_id ? 'selected' : '' }}>
+                    {{ $category->category_name }}
+                </option>
             @endforeach
-        </div>
-    </section> --}}
+        </select>
+    
+        <button type="submit" class="btn btn-primary">Filter</button>
+    
+        <a href="{{ route('home') }}" class="btn btn-secondary">Reset</a>
+    </form>
+    
 
     <!-- Featured Products -->
     <section class="mb-5">
@@ -124,9 +117,7 @@
                 @foreach ($items as $item)
                     <div class="col-md-4 mb-4">
                         <div class="card">
-                            <!-- Make the image clickable, linking to the item details page -->
                             <a href="{{ route('item.show', $item->item_id) }}">
-                                <!-- Display the image if it exists -->
                                 @if($item->image)
                                     <img src="{{ asset('storage/item_gallery/' . $item->image) }}" class="card-img-top" alt="{{ $item->item_name }}">
                                 @else
@@ -138,17 +129,11 @@
                                 <h5 class="card-title">{{ $item->item_name }}</h5>
                                 <p class="card-text">{{ $item->item_desc }}</p>
                                 <p class="card-text">Price: ${{ number_format($item->item_price, 2) }}</p>
-    
-                                <!-- Stock Quantity (Read-only) -->
                                 <p class="card-text"><strong>In Stock:</strong> {{ $item->stock_quantity }}</p>
     
-                                <!-- Form for adding to cart -->
                                 <form action="{{ route('cart.add', $item->item_id) }}" method="POST">
                                     @csrf
-                                    
                                     <input type="number" name="quantity" value="1" min="1" max="{{ $item->stock_quantity }}" class="form-control mb-3" style="width: 60px;" >
-    
-                                    <!-- Add to Cart Button -->
                                     <button type="submit" class="btn btn-primary">Add to Cart</button>
                                 </form>
                             </div>
@@ -158,58 +143,4 @@
             </div>
         </div>
     </section>
-    
-    
-
-    
-    
-    
-    {{-- <!-- Special Offers -->
-    <section class="mb-5">
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card bg-primary text-white">
-                    <div class="card-body p-4">
-                        <h3>Special Offer!</h3>
-                        <p class="mb-4">Get 20% off on all electronics this week</p>
-                        <a href="#" class="btn btn-light">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card bg-success text-white">
-                    <div class="card-body p-4">
-                        <h3>New Arrivals</h3>
-                        <p class="mb-4">Check out our latest collection</p>
-                        <a href="#" class="btn btn-light">View Collection</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
-
-    <!-- Newsletter Section -->
-    {{-- <section class="newsletter-section mb-5">
-        <div class="container">
-            <div class="row justify-content-center text-center">
-                <div class="col-md-8">
-                    <h3 class="mb-3">Subscribe to Our Newsletter</h3>
-                    <p class="text-muted mb-4">Get updates about new products and special offers!</p>
-                    <form class="d-flex justify-content-center">
-                        <div class="input-group" style="max-width: 500px;">
-                            <input type="email" class="form-control" placeholder="Enter your email">
-                            <button class="btn btn-primary" type="submit">Subscribe</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- System Information -->
-    <div class="system-info text-center">
-        <i class="far fa-clock me-2"></i>Current UTC Time: 2025-04-05 06:13:59 | 
-        <i class="far fa-user me-2"></i>User: tolits20
-    </div>
-</div> --}}
-@endsection
+</div>
