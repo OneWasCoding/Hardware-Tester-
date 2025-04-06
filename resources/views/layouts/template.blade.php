@@ -201,7 +201,7 @@
             <li><a href=""><i class="fas fa-home"></i> Dashboard</a></li>
             <li><a href="{{route('user.index')}}"><i class="fas fa-users"></i> Users</a></li>
             <li><a href="{{route('item.index')}}"><i class="fas fa-bed"></i> Items</a></li>
-            <li><a href="http:/resort-ms/admin/reports/index.php"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            <li><a href="{{route('orders.index')}}"><i class="fas fa-cart-shopping"></i>Orders</a></li>
             <li><a href="http:/resort-ms/admin/activity_logs/index.php"><i class="fas fa-scroll"></i> Activity Logs</a></li>
             <li>
                 <form action="{{ route('logout') }}" method="POST">
