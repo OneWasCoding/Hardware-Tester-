@@ -15,23 +15,33 @@ class CartController extends Controller
     {
         if (Auth::check()) {
             $userId = Auth::id();  // Get the logged-in user's ID
-    
             // Fetch cart items for the user along with item details, images, and stock information
             $cartItems = DB::table('cart')
-                ->where('cart.user_id', $userId)
-                ->join('items', 'cart.item_id', '=', 'items.item_id')
-                ->join('item_gallery', 'cart.item_id', '=', 'item_gallery.item_id')  // Join with item_gallery to get the image name
-                ->leftJoin('stocks', 'items.item_id', '=', 'stocks.item_id')  // Join with stocks to get quantity
-                ->select(
-                    'cart.*', 
-                    'items.item_name', 
-                    'items.item_desc', 
-                    'items.item_price', 
-                    'item_gallery.img_name',
-                    'stocks.quantity as stock_quantity'  // Select stock quantity and alias it
-                )
-                ->get();  // Fetch all cart items for the user
-    
+                        ->join('items', 'cart.item_id', '=', 'items.item_id')
+                        ->leftJoin('item_gallery', 'cart.item_id', '=', 'item_gallery.item_id')
+                        ->join('stocks', 'items.item_id', '=', 'stocks.item_id')
+                        ->where('cart.user_id', $userId)
+                        ->select(
+                            'cart.cart_id',
+                            'cart.item_id',
+                            'items.item_name',
+                            'items.item_desc',
+                            'items.item_price',
+                            DB::raw('GROUP_CONCAT(DISTINCT item_gallery.img_name) AS img_name'),
+                            'stocks.quantity as stock_quantity',
+                            'cart.quantity as quantity',
+                        )
+                        ->groupBy(
+                            'cart.quantity',
+                            'cart.cart_id',
+                            'cart.item_id',
+                            'items.item_name',
+                            'items.item_desc',
+                            'items.item_price',
+                            'stocks.quantity'
+                        )
+                        ->get();
+                    // dd($cartItems);
             return view('customer.cart.index', compact('cartItems'));
         } else {
             return redirect()->route('login')->with('error', 'You must be logged in to view your cart.');
@@ -55,9 +65,11 @@ public function addToCart(Request $request, $itemId)
 
         // If the item is already in the cart, update the quantity
         if ($cartItem) {
+            $total_qty=$cartItem->quantity + $request->quantity;
+            // dd($total_qty);
             DB::table('cart')
                 ->where('cart_id', $cartItem->cart_id)
-                ->update(['quantity' => $cartItem->quantity + 1]); // Increment the quantity
+                ->update(['quantity' => $total_qty]); // Increment the quantity
         } else {
             // If the item is not in the cart, add it
             DB::table('cart')->insert([
