@@ -90,6 +90,21 @@
                             </div>
                         </div>
 
+                        <!-- Address -->
+<div class="row mb-3">
+    <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('Address') }}</label>
+
+    <div class="col-md-6">
+        <textarea id="address" class="form-control @error('address') is-invalid @enderror" name="address" rows="4" required>{{ old('address') }}</textarea>
+
+        @error('address')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
+</div>
+
                         <!-- Email -->
                         <div class="row mb-3">
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>

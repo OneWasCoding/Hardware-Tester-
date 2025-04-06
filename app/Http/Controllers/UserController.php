@@ -69,6 +69,7 @@ class UserController extends Controller
             'age' => 'required|integer|min:1',
             'gender' => 'required|in:male,female',
             'contact' => 'required|string|max:255|unique:users,contact,' . $user->user_id . ',user_id',
+            'address' => 'required|string|max:255',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'password' => 'nullable|min:8|confirmed',
         ]);
@@ -80,6 +81,7 @@ class UserController extends Controller
         $user->age = $request->age;
         $user->gender = $request->gender;
         $user->contact = $request->contact;
+        $user->address = $request->address;
     
         // Properly store the uploaded image
         if ($request->hasFile('img')) {
