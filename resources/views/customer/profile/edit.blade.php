@@ -42,6 +42,11 @@
             <label>Contact</label>
             <input type="text" name="contact" class="form-control" value="{{ old('contact', $user->contact) }}" required>
         </div>
+        <div class="mb-3">
+            <label>Address</label>
+            <textarea name="address" class="form-control" rows="4" required>{{ old('address', $user->address) }}</textarea>
+        </div>
+
 
         <div class="mb-3">
             <label>Profile Image</label><br>

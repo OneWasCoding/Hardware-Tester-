@@ -93,6 +93,7 @@ class RegisterController extends Controller
             $user->gender = $request->gender;
             $user->img = $filename;
             $user->contact = $request->contact;
+            $user->address = $request->address;
             $user->save();
 
             // Store the image if provided
