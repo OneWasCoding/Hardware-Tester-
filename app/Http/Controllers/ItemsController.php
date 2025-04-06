@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\items;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ItemImport;
+use Illuminate\Http\Request;
 use App\DataTables\ItemDataTable;
 use App\DataTables\ItemsDataTable;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ItemsController extends Controller
 {
@@ -95,11 +96,77 @@ class ItemsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(items $items)
-    {
-        //
-    }
-
+    
+     public function show($item_id)
+     {
+         // Get item details
+         $item = DB::table('items')
+             ->where('items.item_id', $item_id)
+             ->first();
+     
+         if (!$item) {
+             return redirect()->route('home')->with('error', 'Item not found');
+         }
+     
+         // Get item images
+         $images = DB::table('item_gallery')
+             ->where('item_id', $item_id)
+             ->get();
+     
+         // Default image if no images found
+         if ($images->isEmpty()) {
+             $images = collect([ (object) ['img_name' => 'default.jpg'] ]);
+         }
+     
+         // Get stock quantity
+         $stock = DB::table('stocks')
+             ->where('item_id', $item_id)
+             ->value('quantity') ?? 0;
+     
+         // Get reviews for this item (filtered by item_id)
+         $reviews = DB::table('reviews')
+             ->join('users', 'reviews.user_id', '=', 'users.user_id')  // Specify reviews.user_id and users.id explicitly
+             ->join('accounts', 'users.account_id', '=', 'accounts.account_id')  // Specify users.account_id and accounts.id explicitly
+             ->select('reviews.*', 'accounts.username')  // Select all columns from 'reviews' and 'username' from 'accounts'
+             ->where('reviews.item_id', $item_id)  // Restrict reviews to this item_id
+             ->orderBy('reviews.created_at', 'desc')  // Order by 'created_at' in descending order
+             ->get();
+         
+     
+         // Calculate average rating
+         $avgRating = 0;
+         if ($reviews->count() > 0) {
+             $avgRating = $reviews->avg('rating');
+         }
+     
+         // Get related products (items from the same categories)
+         $categories = DB::table('item_category')
+             ->where('item_id', $item_id)
+             ->pluck('category_id');
+     
+         $relatedItems = DB::table('items')
+             ->join('item_category', 'items.item_id', '=', 'item_category.item_id')
+             ->whereIn('item_category.category_id', $categories)
+             ->where('items.item_id', '!=', $item_id)
+             ->select('items.*')
+             ->distinct()
+             ->limit(4)
+             ->get();
+     
+         // Add images to related items
+         foreach ($relatedItems as $relatedItem) {
+             $relatedItem->image = DB::table('item_gallery')
+                 ->where('item_id', $relatedItem->item_id)
+                 ->value('img_name');
+     
+             if (!$relatedItem->image) {
+                 $relatedItem->image = 'default.jpg';
+             }
+         }
+     
+         return view('customer.item.show', compact('item', 'images', 'stock', 'reviews', 'avgRating', 'relatedItems'));
+     }
+     
     /**
      * Show the form for editing the specified resource.
      */
@@ -211,4 +278,58 @@ class ItemsController extends Controller
 
         return redirect()->back()->with("success", "Items Imported Successfully");
     }
+/*/
+    * Store a new review for an item.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  int  $item_id
+    * @return \Illuminate\Http\Response
+    */
+    public function storeReview(Request $request, $item_id)
+    {
+        // Validate the review input
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:500',
+        ]);
+    
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must be logged in to leave a review');
+        }
+    
+        // Check if the item exists
+        $item = DB::table('items')->where('item_id', $item_id)->first();
+        if (!$item) {
+            return redirect()->route('home')->with('error', 'Item not found');
+        }
+    
+        // Check if the user has a completed order for the item using order_lines
+        $hasCompletedOrder = DB::table('orders')
+            ->where('orders.account_id', Auth::user()->account_id)  // Assuming account_id is used to identify the user
+            ->where('orders.order_status', 'completed')
+            ->whereExists(function ($query) use ($item_id) {
+                $query->select(DB::raw(1))
+                    ->from('order_lines')  // Now using order_lines to link orders and items
+                    ->whereColumn('order_lines.order_id', 'orders.order_id')
+                    ->where('order_lines.item_id', $item_id);
+            })
+            ->exists();
+    
+        if (!$hasCompletedOrder) {
+            return redirect()->route('item.show', $item_id)->with('error', 'You must have a completed order for this item to leave a review.');
+        }
+    
+        // Store the review if the user has a completed order
+        DB::table('reviews')->insert([
+            'item_id' => $item_id,
+            'user_id' => Auth::id(),
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    
+        return redirect()->route('item.show', $item_id)->with('status', 'Review submitted successfully!');
+    }
+    
 }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use function Laravel\Prompts\select;
 
 class CartController extends Controller
 {
@@ -168,6 +169,12 @@ public function update(Request $request)
     
     public function checkout(Request $request, Cart $cart)
     {
+        $user = DB::table('users')
+        ->where('user_id', Auth::id())
+        ->select('address')
+        ->first();
+
+
         // dd(Auth::id());
      $cart=DB::table('cart')
             ->join('users', 'cart.user_id', '=', 'users.user_id')
@@ -205,7 +212,7 @@ public function update(Request $request)
         $order->account_id=$cart[0]->account_id; 
         $order->total_amount=$total;
         $order->order_status='pending';
-        $order->shipping_address='sa bahay nyo';
+        $order->shipping_address=$user->address;
         $order->save();
         $order_id=$order->order_id;
 
