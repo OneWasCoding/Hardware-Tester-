@@ -306,7 +306,7 @@ class ItemsController extends Controller
         // Check if the user has a completed order for the item using order_lines
         $hasCompletedOrder = DB::table('orders')
             ->where('orders.account_id', Auth::user()->account_id)  // Assuming account_id is used to identify the user
-            ->where('orders.order_status', 'completed')
+            ->where('orders.order_status', 'shipped')  // Check for completed orders
             ->whereExists(function ($query) use ($item_id) {
                 $query->select(DB::raw(1))
                     ->from('order_lines')  // Now using order_lines to link orders and items

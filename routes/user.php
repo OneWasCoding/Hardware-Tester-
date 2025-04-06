@@ -29,7 +29,7 @@ Route::get('/item/{item_id}', [CartController::class, 'showItem'])->name('item.v
 Route::delete('/cart/{cart_id}', [CartController::class, 'delete'])->name('cart.delete')->middleware(`auth`);
 Route::put('/cart/update', [CartController::class, 'update'])->name('cart.update');
 
-Route::get('/item/{item_id}', [ItemsController::class, 'show'])->name('item.show');
+Route::get('/item/{item_id}', [ItemsController::class, 'show'])->name('items.show');
 Route::post('/item/{item_id}/review', [ItemsController::class, 'storeReview'])->name('item.review')->middleware('auth');
 
 Route::get('review/edit/{item_id}/{review_id}', [ReviewController::class, 'edit'])->name('review.edit');
