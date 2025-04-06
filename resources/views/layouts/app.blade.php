@@ -113,7 +113,7 @@
         <nav class="navbar navbar-expand-md navbar-light sticky-top">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{ config('', 'Keyboard-Haven') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -128,7 +128,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto align-items-center">
                         @guest
-                            @if (Route::has('login'))
+                            @if (Route::has(''))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">
                                         <i class="fas fa-sign-in-alt me-1"></i>{{ __('Login') }}
@@ -136,7 +136,7 @@
                                 </li>
                             @endif
 
-                            @if (Route::has('register'))
+                            @if (Route::has(''))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">
                                         <i class="fas fa-user-plus me-1"></i>{{ __('Register') }}
