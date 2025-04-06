@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+<?php 
+// dd($cartItems);
+?>
 @section('content')
 <div class="container">
     <h2>Your Cart</h2>
@@ -63,6 +65,7 @@
         </div>
         
         <button type="submit" class="btn btn-success">Update Cart</button>
+        <a href="{{ route('checkout') }}" class="btn btn-primary">Proceed to Checkout</a>
     </form>
     
     <!-- Hidden form for delete actions -->
