@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
     /*
-    |--------------------------------------------------------------------------
+    |----------------------------------------------------------------------
     | Login Controller
-    |--------------------------------------------------------------------------
+    |----------------------------------------------------------------------
     |
     | This controller handles authenticating users for the application and
     | redirecting them to your home screen. The controller uses a trait
@@ -26,13 +27,37 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // protected $redirectTo = '/home'; // You can remove this or leave it as is for default redirect
 
-    protected function loggedOut(\Illuminate\Http\Request $request)
+    /**
+     * Redirect user after successful login based on role.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Account  $user
+     * @return \Illuminate\Http\Response
+     */
+    protected function authenticated(Request $request, $user)
     {
-        return redirect('/login'); // This will redirect to home page
+        // Check if the user is an admin
+        if ($user->role === 'admin') {
+            // Redirect to the admin dashboard (or your desired admin route)
+            return redirect()->route('user.index');
+        }
+
+        // Redirect to the default customer dashboard (or another route for customers)
+        return redirect()->route('home');
     }
 
+    /**
+     * Handle the logout logic and redirect to the login page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function loggedOut(Request $request)
+    {
+        return redirect('/login'); // Redirect to the login page after logout
+    }
 
     /**
      * Create a new controller instance.

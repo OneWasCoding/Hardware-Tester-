@@ -1,21 +1,10 @@
-
 @extends('layouts.base')
 @extends('layouts.template')
 @section('content')
 <?php 
 // dd($user)
 ?> 
-@if($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-            <li>
-                {{$error}}
-            </li>
-        @endforeach
-    </ul>
-</div>
-@endif
+
 <title>Profile Update</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
@@ -156,6 +145,17 @@
 </style>
 </head>
 <div class="content">
+    @if($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>
+                {{$error}}
+            </li>
+        @endforeach
+    </ul>
+</div>
+@endif
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 profile-container">

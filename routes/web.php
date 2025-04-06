@@ -6,11 +6,14 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemsController;
+use Illuminate\Support\Facades\Redirect;
 
 require __DIR__.'/user.php';
 require __DIR__.'/admin.php';
 
-
+Route::get('/', function () {
+    return Redirect::route('home');
+});
 
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

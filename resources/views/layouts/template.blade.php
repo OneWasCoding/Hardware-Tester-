@@ -17,19 +17,19 @@
             height: 100vh;
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1E1E2E;
-            color: #E0E0E0;
+            background: #f5f7fa;
+            color: #333;
         }
 
         .sidebar {
             grid-row: 1 / 5; 
-            background: #181825;
-            color: white;
+            background: #ffffff;
+            color: #333;
             padding: 20px 0;
             position: fixed;
             height: 100vh;
             width: 250px;
-            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
 
@@ -37,10 +37,10 @@
             text-align: center;
             margin-bottom: 30px;
             padding: 10px;
-            color: #CBA6F7;
+            color: #4a6baf;
             font-weight: 600;
             letter-spacing: 1px;
-            border-bottom: 1px solid #313244;
+            border-bottom: 1px solid #eaedf2;
         }
 
         .sidebar ul {
@@ -54,7 +54,7 @@
         }
 
         .sidebar ul li a {
-            color: #CDD6F4;
+            color: #5a6a8a;
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -69,59 +69,60 @@
             width: 20px;
             text-align: center;
             font-size: 1.1em;
-            color: #89B4FA;
+            color: #6d8ed3;
         }
 
         .sidebar ul li a:hover {
-            background: #313244;
+            background: #f0f4fb;
             transform: translateX(5px);
-            border-left: 4px solid #F5C2E7;
-            color: #F5C2E7;
+            border-left: 4px solid #4a6baf;
+            color: #4a6baf;
         }
 
         .sidebar ul li a:hover i {
-            color: #F5C2E7;
+            color: #4a6baf;
         }
 
         .header {
             grid-column: 2 / 5; 
             grid-row: 1/2;
-            background: linear-gradient(135deg, #1E1E2E 0%, #302D41 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 30px;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border-bottom: 1px solid #313244;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid #eaedf2;
         }
 
         .header h2 {
             font-weight: 600;
             font-size: 1.5rem;
-            color: #CBA6F7;
+            color: #4a6baf;
             letter-spacing: 1px;
         }
 
         .admin-info {
             display: flex;
             align-items: center;
-            background: #313244;
+            background: #edf1f9;
             padding: 8px 15px;
             border-radius: 50px;
             font-weight: 500;
             transition: all 0.3s;
+            color: #5a6a8a;
         }
 
         .admin-info:hover {
-            background: #45475A;
+            background: #dde5f3;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .admin-info i {
             margin-right: 10px;
-            color: #F5C2E7;
+            color: #4a6baf;
             font-size: 1.1em;
         }
 
@@ -130,16 +131,16 @@
             grid-row: 2 / 5;
             width: 100%;
             padding: 20px;
-            background: #1E1E2E;
-            box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.1);
-            color: black;
+            background: #f5f7fa;
+            box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.05);
+            color: #333;
         }
 
         /* Adding some cool pulse animation to the sidebar hover */
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(245, 194, 231, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(245, 194, 231, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(245, 194, 231, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(74, 107, 175, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(74, 107, 175, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(74, 107, 175, 0); }
         }
 
         .sidebar ul li a:active {
@@ -154,7 +155,7 @@
         <ul>
             <li><a href=""><i class="fas fa-home"></i> Dashboard</a></li>
             <li><a href="{{route('user.index')}}"><i class="fas fa-users"></i> Users</a></li>
-            <li><a href="http:/resort-ms/admin/rooms/index.php"><i class="fas fa-bed"></i> Rooms</a></li>
+            <li><a href="{{route('item.index')}}"><i class="fas fa-bed"></i> Items</a></li>
             <li><a href="http:/resort-ms/admin/reports/index.php"><i class="fas fa-chart-bar"></i> Reports</a></li>
             <li><a href="http:/resort-ms/admin/activity_logs/index.php"><i class="fas fa-scroll"></i> Activity Logs</a></li>
             <li><a href="http:/resort-ms/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
