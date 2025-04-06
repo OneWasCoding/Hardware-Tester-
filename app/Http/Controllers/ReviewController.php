@@ -50,6 +50,8 @@ class ReviewController extends Controller
                 'comment' => $request->comment,
                 'updated_at' => now(),
             ]);
+
+        return redirect()->route('items.show', ['item_id' => $item_id])->with('success', 'Review updated successfully');
     
     }
 
