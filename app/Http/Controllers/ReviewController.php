@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Review;
+use App\DataTables\reviewsDataTable;
 
 class ReviewController extends Controller
 {
@@ -49,7 +51,12 @@ class ReviewController extends Controller
                 'updated_at' => now(),
             ]);
     
-        return redirect()->route('item.show', $item_id)->with('status', 'Review updated successfully!');
+    }
+
+    public function index(reviewsDataTable $dataTable)
+    {
+        return $dataTable->render('admin.reviews');
+
     }
 
 }
