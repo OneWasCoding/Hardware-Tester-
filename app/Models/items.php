@@ -14,5 +14,10 @@ class items extends Model
     public $primaryKey="item_id";
     public $table="items";
     public $fillable=['item_name','item_price','item_desc','item_status'];
+
+    public function itemGallery()
+{
+    return $this->hasMany(ItemGallery::class, 'item_id');
+}
     
 }
