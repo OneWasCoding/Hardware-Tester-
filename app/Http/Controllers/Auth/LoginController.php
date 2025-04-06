@@ -7,6 +7,8 @@ use App\Models\Account;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
+use function PHPSTORM_META\elementType;
+
 class LoginController extends Controller
 {
     /*
@@ -42,10 +44,13 @@ class LoginController extends Controller
         if ($user->role === 'admin') {
             // Redirect to the admin dashboard (or your desired admin route)
             return redirect()->route('user.index');
-        }
-
-        // Redirect to the default customer dashboard (or another route for customers)
-        return redirect()->route('home');
+        }elseif ($user->role === 'user') {
+            // Redirect to the customer dashboard (or your desired customer route)
+            return redirect()->route('home');
+        }else{
+            // Handle other roles or redirect to a default route
+            return redirect()->route('login');     
+           }     
     }
 
     /**
@@ -69,4 +74,6 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
+
+
 }

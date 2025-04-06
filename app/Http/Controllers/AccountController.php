@@ -24,40 +24,29 @@ class AccountController extends Controller
        return view("admin.users.edit",compact('user','account'));
    }
 
-   public function update_password(Request $request, string $id)
+   public function update_password(Request $request, string $id)    
    {
-       $rules = [
-           'password' => 'required|min:8|confirmed',
-           'password_confirmation' => 'required|min:8',
-       ];
+    $rules = [
+        'newpass' => 'required|min:8|same:cpass', // Ensure 'npass' is required, has a minimum length, and matches 'cpass'
+        'cpass' => 'required|min:8', // Ensure 'cpass' (confirmation password) is required and has a minimum length
+    ];
+    
+    $messages = [
+        'cpass.required' => 'Confirmation password is required.',
+        'newpass.required' => 'New password is required.',
+        'newpass.same' => 'New password and confirmation password must match.',
+    ];
+    
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
-       $messages = [
-           'password.required' => 'Password is required',
-           'password.min' => 'Password must be at least 8 characters',
-           'password.confirmed' => 'Passwords do not match',
-       ];
-
-       $validator = Validator::make($request->all(), $rules, $messages);
-
-       if ($validator->fails()) {
-           return redirect()->back()->withErrors($validator)->withInput();
-       }
-
-       try {
-           DB::beginTransaction();
-
-           $user = user::findOrFail($id);
-           $user->password = Hash::make($request->password);
-           $user->save();
-
-           DB::commit();
+           $user = DB::table('accounts')->where('account_id', $id)->update([
+               'password' => Hash::make($request->cpass),
+           ]);
            return redirect()->route('user.index')->with('success', 'Password updated successfully');
-       } catch (Exception $e) {
-           DB::rollBack();
-           Log::error('Error updating password: '.$e->getMessage());
-           return redirect()->back()->with('error', 'Failed to update password');
-       }
-   }
+        }
       
    
    public function update(Request $request, string $id)
