@@ -33,5 +33,6 @@ Route::get('items/restore/{id}', [ItemsController::class, 'restore'])->name('ite
 Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index')->middleware(Admin::class);
 Route::get('/order_status/{id}', [OrdersController::class, 'status_update'])->name('orders.status')->middleware(Admin::class);
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
+Route::get('reviews/destroy/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy')->middleware(Admin::class);
 
 ?>
