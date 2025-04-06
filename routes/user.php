@@ -19,3 +19,5 @@ Route::prefix('customer/cart')->group(function () {
     Route::delete('/clear', [CartController::class, 'clearCart'])->name('cart.clear');
     Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 });
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');

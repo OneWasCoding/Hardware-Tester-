@@ -117,65 +117,34 @@
 
     <!-- Featured Products -->
     <section class="mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0">Featured Products</h2>
-            {{-- <a href="#" class="btn btn-outline-primary">View All</a> --}}
-        </div>
-        <div class="row g-4">
-            @php
-                $products = [
-                    [
-                        'name' => 'Wireless Earbuds',
-                        'price' => 79.99,
-                        'original_price' => 99.99,
-                        'discount' => 20,
-                        'image' => 'https://via.placeholder.com/300x200'
-                    ],
-                    [
-                        'name' => 'Smart Watch',
-                        'price' => 199.99,
-                        'original_price' => 249.99,
-                        'discount' => 20,
-                        'image' => 'https://via.placeholder.com/300x200'
-                    ],
-                    [
-                        'name' => 'Gaming Headset',
-                        'price' => 89.99,
-                        'original_price' => 129.99,
-                        'discount' => 30,
-                        'image' => 'https://via.placeholder.com/300x200'
-                    ],
-                    [
-                        'name' => 'Mechanical Keyboard',
-                        'price' => 149.99,
-                        'original_price' => 199.99,
-                        'discount' => 25,
-                        'image' => 'https://via.placeholder.com/300x200'
-                    ]
-                ];
-            @endphp
-
-            @foreach($products as $product)
-            <div class="col-md-3">
-                <div class="product-card">
-                    <div class="position-relative">
-                        <img src="{{ $product['image'] }}" class="product-img w-100" alt="{{ $product['name'] }}">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $product['name'] }}</h5>
-                        <div class="d-flex align-items-center mb-2">
-                            <span class="price me-2">${{ $product['price'] }}</span>
+        <div class="container">
+            <h2>Items for Sale</h2>
+    
+            <div class="row">
+                @foreach ($items as $item)
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <!-- Display the image if it exists -->
+                            @if($item->image)
+                                <img src="{{ asset('storage/item_gallery/' . $item->image) }}" class="card-img-top" alt="{{ $item->item_name }}">
+                            @else
+                                <img src="{{ asset('storage/item_gallery/default.jpg') }}" class="card-img-top" alt="{{ $item->item_name }}">
+                            @endif
+    
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $item->item_name }}</h5>
+                                <p class="card-text">{{ $item->item_desc }}</p>
+                                <p class="card-text">Price: ${{ number_format($item->item_price, 2) }}</p>
+                                <a href="#" class="btn btn-primary">Add to Cart</a>
+                            </div>
                         </div>
-                        <button class="btn btn-primary w-100">
-                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-                        </button>
                     </div>
-                </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
     </section>
-
+    
+    
     {{-- <!-- Special Offers -->
     <section class="mb-5">
         <div class="row g-4">
