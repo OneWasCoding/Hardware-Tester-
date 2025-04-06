@@ -5,6 +5,7 @@ use App\Models\user;
 use Illuminate\Http\Request;
 use App\DataTables\userDataTable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -48,48 +49,65 @@ class UserController extends Controller
      */
     public function edit(user $user)
     {
-        //
-    }
+        $account = Auth::user();
+        $user = $account->user;
+    
+        return view('customer.profile.edit', compact('user', 'account'));    }
 
     /**
      * Update the specified resource in storage.
      */
-    // public function update(Request $request)
-    // {
-    //     $user = Auth::user();
+    public function update(Request $request)
+    {
+       // dd($request->file('img'));
+        $account = Auth::user();         // logged in account
+        $user = $account->user;          // related user
+    
+        $request->validate([
+            'fname' => 'required|string|max:255',
+            'lname' => 'required|string|max:255',
+            'age' => 'required|integer|min:1',
+            'gender' => 'required|in:male,female',
+            'contact' => 'required|string|max:255|unique:users,contact,' . $user->user_id . ',user_id',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'password' => 'nullable|min:8|confirmed',
+        ]);
+    
+        // Update user fields
+        $account->username = $request->username;
+        $user->fname = $request->fname;
+        $user->lname = $request->lname;
+        $user->age = $request->age;
+        $user->gender = $request->gender;
+        $user->contact = $request->contact;
+    
+        // Properly store the uploaded image
+        if ($request->hasFile('img')) {
+            $file = $request->file('img');
+            $filename = $file->hashName(); // unique name
         
-    //     $request->validate([
-    //         'fname' => 'required|string|max:255',
-    //         'lname' => 'required|string|max:255',
-    //         'age' => 'required|numeric|min:18',
-    //         'gender' => 'required|in:male,female,other',
-    //         'contact' => 'required|string|max:255',
-    //         'img' => 'nullable|image|mimes:jpeg,jpg,png|max:2048'
-    //     ]);
-
-    //     $userData = [
-    //         'fname' => $request->fname,
-    //         'lname' => $request->lname,
-    //         'age' => $request->age,
-    //         'gender' => $request->gender,
-    //         'contact' => $request->contact,
-    //     ];
-
-    //     if ($request->hasFile('img')) {
-    //         if ($user->img) {
-    //             Storage::disk('public')->delete('profile_images/' . $user->img);
-    //         }
-
-    //         $image = $request->file('img');
-    //         $filename = time() . '.' . $image->getClientOriginalExtension();
-    //         $image->storeAs('profile_images', $filename, 'public');
-    //         $userData['img'] = $filename;
-    //     }
-
-    //     $user->update($userData);
-
-    //     return redirect()->back()->with('success', 'Profile updated successfully!');
-    // }
+            // Save to storage/app/public/user_img
+            $path = $file->storeAs('user_img', $filename, 'public');
+        
+            if ($path) {
+                $user->img = $filename;
+            } else {
+                return redirect()->back()->with('error', 'Image upload failed.');
+            }
+        }
+        
+    
+        $user->save();
+    
+        // Update password if provided
+        if ($request->filled('password')) {
+            $account->password = Hash::make($request->password);
+            $account->save();
+        }
+    
+        return redirect()->route('profile.view')->with('success', 'Profile updated successfully.');
+    }
+    
     /**
      * Remove the specified resource from storage.
      */

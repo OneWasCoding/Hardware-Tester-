@@ -6,6 +6,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 
 Route::get('/customer/profile/view', [UserController::class, 'viewProfile'])->name('profile.view')->middleware('auth');
+Route::get('/customer/profile/edit', [UserController::class, 'edit'])->name('profile.edit')->middleware('auth');
+Route::put('/customer/profile/update', [UserController::class, 'update'])->name('profile.update')->middleware('auth');
 
 Auth::routes();
 
