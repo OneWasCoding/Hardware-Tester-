@@ -6,6 +6,7 @@ use App\Models\review;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -22,7 +23,11 @@ class reviewsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'reviews.action')
+            ->addColumn('action', function ($row) {
+                return '<form action="' . route('reviews.destroy', $row->ID) . '" method="get" class="d-inline">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure?\')">Delete</button>
+                        </form>';
+            })
             ->setRowId('id');
     }
 
@@ -31,7 +36,17 @@ class reviewsDataTable extends DataTable
      */
     public function query(review $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()
+            ->join('items', 'reviews.item_id', '=', 'items.item_id')
+            ->join('users', 'reviews.user_id', '=', 'users.user_id')
+            ->select(
+                'reviews.review_id As ID',
+                'items.item_name As Item',
+                DB::raw('CONCAT(users.fname, " ", users.lname) as Customer'),
+                'reviews.rating As Rating',
+                'reviews.comment As Comment',
+                'reviews.created_at As Created'
+            );
     }
 
     /**
@@ -62,15 +77,17 @@ class reviewsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('Item'),
+            Column::make('Customer'),
+            Column::make('Rating'),
+            Column::make('Comment'),
+            Column::make('Created'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
                   ->width(60)
                   ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+           
         ];
     }
 
