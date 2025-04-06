@@ -385,6 +385,13 @@
                         <div class="review-header">
                             <span class="reviewer-name">{{ $review->username }}</span>
                             <span class="review-date">{{ \Carbon\Carbon::parse($review->created_at)->format('M d, Y') }}</span>
+    
+                            <!-- Display Edit Icon if the logged-in user is the reviewer -->
+                            @if(Auth::check() && Auth::id() == $review->user_id)
+                                <a href="{{ route('review.edit', parameters: ['item_id' => $item->item_id, 'review_id' => $review->review_id]) }}">
+                                    <i class="fas fa-edit" style="color: #007bff;"></i> Edit
+                                </a>
+                            @endif
                         </div>
                         <div class="review-rating">
                             @for($i = 1; $i <= 5; $i++)

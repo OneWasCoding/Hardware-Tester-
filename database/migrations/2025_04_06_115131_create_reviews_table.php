@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reviews', function (Blueprint $table) {
-            $table->id();
+            $table->id('review_id'); // Primary key for the reviews table
             $table->unsignedBigInteger('user_id'); // Foreign key referencing the users table
             $table->unsignedBigInteger('item_id'); // Foreign key referencing the items table
             $table->integer('rating'); // Rating given by the user

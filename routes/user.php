@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\ReviewController;
 
 Route::get('/customer/profile/view', [UserController::class, 'viewProfile'])->name('profile.view')->middleware('auth');
 Route::get('/customer/profile/edit', [UserController::class, 'edit'])->name('profile.edit')->middleware('auth');
@@ -30,3 +31,6 @@ Route::put('/cart/update', [CartController::class, 'update'])->name('cart.update
 
 Route::get('/item/{item_id}', [ItemsController::class, 'show'])->name('item.show');
 Route::post('/item/{item_id}/review', [ItemsController::class, 'storeReview'])->name('item.review')->middleware('auth');
+
+Route::get('review/edit/{item_id}/{review_id}', [ReviewController::class, 'edit'])->name('review.edit');
+Route::put('review/edit/{item_id}/{review_id}', [ReviewController::class, 'update'])->name('review.update');
