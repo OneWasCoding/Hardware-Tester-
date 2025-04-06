@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -104,6 +105,11 @@ class RegisterController extends Controller
                 }
             }
 
+            view ('mails.registermail',compact('account', 'user'));
+            Mail::send('mails.registermail', ['account' => $account, 'user' => $user], function ($message) use ($user, $account) {
+                $message->to($account->email)
+                        ->subject('Welcome to Our Platform');
+            });
             // Commit the transaction
             DB::commit();
 
