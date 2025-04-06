@@ -128,7 +128,7 @@ class ItemsController extends Controller
              ->join('users', 'reviews.user_id', '=', 'users.user_id')  // Specify reviews.user_id and users.id explicitly
              ->join('accounts', 'users.account_id', '=', 'accounts.account_id')  // Specify users.account_id and accounts.id explicitly
              ->select('reviews.*', 'accounts.username')  // Select all columns from 'reviews' and 'username' from 'accounts'
-             ->where('reviews.item_id', $item_id)  // Restrict reviews to this item_id
+             ->where('reviews.item_id',  $item_id)  // Restrict reviews to this item_id
              ->orderBy('reviews.created_at', 'desc')  // Order by 'created_at' in descending order
              ->get();
          
