@@ -30,6 +30,8 @@ class OrderDataTable extends DataTable
                             <select name="status" class="form-select" onchange="this.form.submit()">
                                 <option value="pending" '.($row->Status == 'pending' ? 'selected' : '').'>Pending</option>
                                 <option value="shipped" '.($row->Status == 'shipped' ? 'selected' : '').'>Shipped</option>
+                                <option value="completed" '.($row->Status == 'completed' ? 'selected' : '').'>Completed</option>
+
                         </div>';
             })
             ->setRowId('id');
