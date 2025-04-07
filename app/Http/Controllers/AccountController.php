@@ -119,4 +119,17 @@ class AccountController extends Controller
            return redirect()->back()->with("error", "Failed to update the account. Error: " . $e->getMessage());
        }
    }
+
+   public function status_update(Request $request, string $id)
+   {
+    // dd($request,$id);
+       $user = account::where('account_id', $id)->first();
+       if ($user) {
+            $user->status = $request->status;
+           $user->save();
+           return redirect()->route('user.index')->with('success', 'User status updated successfully');
+       } else {
+           return redirect()->route('user.index')->with('error', 'User not found');
+       }
+   }
 }

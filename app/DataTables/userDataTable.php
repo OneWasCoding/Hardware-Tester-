@@ -23,22 +23,33 @@ class UserDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-        ->addColumn('created_at', function ($row) {
-            return Carbon::parse($row->created_at)->format('d M Y, h:i A'); 
-        })
-        ->addColumn('updated_at', function ($row) {
-            return Carbon::parse($row->updated_at)->format('d M Y, h:i A');
+        
+        ->addColumn('Status', function($row){
+            return '<div class="btn-group" role="group">
+            <form action="'. route('user.status', $row->account_id) .'" method="get">
+                <select name="status" onchange="this.form.submit()" class="form-select">
+                    <option value="active" '.($row->status == 'active' ? 'selected' : '').'>Active</option>
+                    <option value="inactive" '.($row->status == 'inactive' ? 'selected' : '').'>Inactive</option>
+                </select>
+            </form>
+            </div>';
         })
         ->addColumn('action', function ($row) {
             return '<div class="btn-group" role="group">
                         <a href="' . route("user.edit", $row->account_id) . '" class="btn btn-primary btn-xl mx-1">
                             <i class="fa fa-edit"></i>
                         </a>
-                        <a href="' . route("user.destroy", $row->account_id) . '" class="btn btn-danger btn-xl mx-1">
-                            <i class="fa fa-trash"></i>
-                        </a>
+                        <form action="' . route("user.destroy", $row->account_id) . '" method="POST" style="display:inline;">
+                            '.csrf_field().'
+                            '.method_field('DELETE').'
+                            <button type="submit" class="btn btn-danger btn-xl mx-1" onclick="return confirm(\'Are you sure you want to delete this user?\')">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
                     </div>';
-        })->setRowId('account_id');
+        })
+        ->rawColumns(['Status', 'action']) // Specify columns to render as raw HTML
+        ->setRowId('account_id');
     }
 
     /**
@@ -49,6 +60,7 @@ class UserDataTable extends DataTable
         return $model->newQuery()
         ->join('accounts', 'users.account_id', '=', 'accounts.account_id')
         ->select([
+            'accounts.status AS status',
             'users.account_id AS account_id',
             \DB::raw('CONCAT(users.fname, " ", users.lname) AS Name'),
             'accounts.username AS Username',
@@ -89,6 +101,7 @@ class UserDataTable extends DataTable
                   Column::make('Username')->width(200)->addClass('text-center'),
                   Column::make('Email')->width(200)->addClass('text-center'),
                   Column::make('Role')->width(200)->addClass('text-center'),
+                  Column::computed('Status')->width(100)->addClass('text-center'),
                     Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
