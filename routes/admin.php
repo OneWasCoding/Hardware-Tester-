@@ -23,6 +23,7 @@ Route::prefix("admin/users")->group(function(){
     Route::put('/update/{id}',[AccountController::class,"update"])->name("user.update");
     Route::delete('/destroy/{id}', [AccountController::class, "destroy"])->name("user.destroy")->middleware(Admin::class); // Fixed
     Route::post('/update_password/{id}', [AccountController::class, "update_password"])->name("user.update.password")->middleware(Admin::class);
+    Route::get('/user-status/{id}',[AccountController::class,"status_update"])->name('user.status');
 });
 Auth::routes();
 
