@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-4">
                         <div class="form-floating">
-                            <input id="fname" type="text" class="form-control @error('fname') is-invalid @enderror" name="fname" value="{{ old('fname') }}" required autocomplete="fname" placeholder="First Name" autofocus>
+                            <input id="fname" type="text" class="form-control @error('fname') is-invalid @enderror" name="fname" value="{{ old('fname') }}"    autocomplete="fname" placeholder="First Name" autofocus>
                             <label for="fname">{{ __('First Name') }}</label>
                             @error('fname')
                                 <span class="invalid-feedback" role="alert">
@@ -27,7 +27,7 @@
 
                     <div class="col-md-6 mb-4">
                         <div class="form-floating">
-                            <input id="lname" type="text" class="form-control @error('lname') is-invalid @enderror" name="lname" value="{{ old('lname') }}" required autocomplete="lname" placeholder="Last Name">
+                            <input id="lname" type="text" class="form-control @error('lname') is-invalid @enderror" name="lname" value="{{ old('lname') }}"  autocomplete="lname" placeholder="Last Name">
                             <label for="lname">{{ __('Last Name') }}</label>
                             @error('lname')
                                 <span class="invalid-feedback" role="alert">
@@ -41,7 +41,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-4">
                         <div class="form-floating">
-                            <input id="age" type="number" class="form-control @error('age') is-invalid @enderror" name="age" value="{{ old('age') }}" required min="18" placeholder="Age">
+                            <input id="age" type="number" class="form-control @error('age') is-invalid @enderror" name="age" value="{{ old('age') }}"   min="18" placeholder="Age">
                             <label for="age">{{ __('Age') }}</label>
                             @error('age')
                                 <span class="invalid-feedback" role="alert">
@@ -53,7 +53,7 @@
 
                     <div class="col-md-6 mb-4">
                         <div class="form-floating">
-                            <select id="gender" class="form-select @error('gender') is-invalid @enderror" name="gender" required aria-label="Gender">
+                            <select id="gender" class="form-select @error('gender') is-invalid @enderror" name="gender"    aria-label="Gender">
                                 <option value="" disabled {{ old('gender') ? '' : 'selected' }}>Select Gender</option>
                                 <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
                                 <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
@@ -70,7 +70,7 @@
 
                 <div class="mb-4">
                     <div class="form-floating">
-                        <input id="contact" type="text" class="form-control @error('contact') is-invalid @enderror" name="contact" value="{{ old('contact') }}" required maxlength="11" placeholder="Contact Number">
+                        <input id="contact" type="text" class="form-control @error('contact') is-invalid @enderror" name="contact" value="{{ old('contact') }}"    maxlength="11" placeholder="Contact Number">
                         <label for="contact">{{ __('Contact Number') }}</label>
                         @error('contact')
                             <span class="invalid-feedback" role="alert">
@@ -82,7 +82,7 @@
 
                 <div class="mb-4">
                     <div class="form-floating">
-                        <textarea id="address" class="form-control @error('address') is-invalid @enderror" name="address" placeholder="Address" style="height: 100px" required>{{ old('address') }}</textarea>
+                        <textarea id="address" class="form-control @error('address') is-invalid @enderror" name="address" placeholder="Address" style="height: 100px"   >{{ old('address') }}</textarea>
                         <label for="address">{{ __('Address') }}</label>
                         @error('address')
                             <span class="invalid-feedback" role="alert">
@@ -94,7 +94,7 @@
 
                 <div class="mb-4">
                     <div class="form-floating">
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email Address">
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"    autocomplete="email" placeholder="Email Address">
                         <label for="email">{{ __('Email Address') }}</label>
                         @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -106,7 +106,7 @@
 
                 <div class="mb-4">
                     <div class="form-floating">
-                        <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required placeholder="Username">
+                        <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}"    placeholder="Username">
                         <label for="username">{{ __('Username') }}</label>
                         @error('username')
                             <span class="invalid-feedback" role="alert">
@@ -118,7 +118,7 @@
 
                 <div class="mb-4">
                     <div class="form-floating">
-                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Password">
+                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"    autocomplete="new-password" placeholder="Password">
                         <label for="password">{{ __('Password') }}</label>
                         <button type="button" class="password-toggle" onclick="togglePassword('password')">
                             <i class="fas fa-eye"></i>
@@ -133,7 +133,7 @@
 
                 <div class="mb-4">
                     <div class="form-floating">
-                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation"    autocomplete="new-password" placeholder="Confirm Password">
                         <label for="password-confirm">{{ __('Confirm Password') }}</label>
                         <button type="button" class="password-toggle" onclick="togglePassword('password-confirm')">
                             <i class="fas fa-eye"></i>
