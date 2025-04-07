@@ -15,7 +15,7 @@ class items extends Model
     use Searchable;
     public $primaryKey="item_id";
     public $table="items";
-    public $fillable=['item_name','item_price','item_desc','item_status'];
+    public $fillable=['item_name','item_price','item_desc','item_status', 'created_at', 'updated_at' , 'deleted_at'];
 
     public function itemGallery()
 {

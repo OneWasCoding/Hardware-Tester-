@@ -109,6 +109,8 @@ class UserController extends Controller
         $account->save();
         $user->save();
     
+
+        
         return redirect()->route('profile.view')->with('success', 'Profile updated successfully!');
     }
     

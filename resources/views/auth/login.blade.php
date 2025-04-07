@@ -58,7 +58,7 @@
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     @if (Route::has('password.request'))
                         <a class="small text-decoration-none" href="{{ route('password.request') }}">
-                            {{ __('Forgot Your Password?') }}
+                            {{ __('') }}
                         </a>
                     @endif
                     <button type="submit" class="btn btn-primary px-4">
