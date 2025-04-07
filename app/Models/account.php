@@ -12,7 +12,7 @@ class Account extends Authenticatable
     public $table = 'accounts';
     public $primaryKey = 'account_id';
     public $timestamps = false;
-    public $fillable = ['username', 'email', 'password'];
+    public $fillable = ['username', 'role', 'email', 'password'];
 
     // Define the relationship to the User model
     public function user()

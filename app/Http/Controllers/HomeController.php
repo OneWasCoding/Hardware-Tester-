@@ -26,7 +26,7 @@ class HomeController extends Controller
             case 'scope':
                 $query = items::query()->with('categories');
                 if ($search) {
-                    $query->search($search); // uses model scope
+                    $query->search($search); // model scope
                 }
                 break;
     
