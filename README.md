@@ -27,6 +27,7 @@ To install and ensure that Laravel is version ^11.0, follow these steps:
    composer require spatie/laravel-ignition --no-interaction
    composer require laravel/scout
    composer require railsware/mailtrap-php symfony/http-client nyholm/psr7
+   composer require consoletvs/charts
 
 
    bash:
