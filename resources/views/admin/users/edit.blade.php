@@ -3,6 +3,7 @@
 @section('content')
 <?php 
 // dd($user)
+
 ?> 
 
 <title>Profile Update</title>

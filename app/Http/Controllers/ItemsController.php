@@ -187,17 +187,27 @@ class ItemsController extends Controller
     {
         // dd($request->all());
         $rules = [
-            "item_name" => 'min:3',
-            "item_price" => "min:5|numeric",
-            "item_qty" => "numeric",
-            'item_img.*' => 'nullable|image|mimes:jpeg,jpg,png'
+            "item_name" => 'required|min:3|max:255|regex:/^[a-zA-Z0-9\s\-]+$/',
+            "item_price" => "required|min:5|numeric|between:0,999999.99",
+            'item_img.*' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            "item_desc" => "nullable|string|max:1000",
+            "category" => "required|exists:category,category_id",
         ];
         
         $messages = [
+            "item_name.required" => "Product name is required",
             "item_name.min" => "Product name must be at least 3 characters",
+            "item_name.max" => "Product name must not exceed 255 characters",
+            "item_name.regex" => "Product name can only contain letters, numbers, spaces, and hyphens",
+            "item_price.required" => "Price is required",
             "item_price.numeric" => "Price must be a number",
             "item_price.min" => "Price must be at least 5",
-            'item_img.*.mimes' => 'Only JPG, JPEG or PNG images allowed'
+            "item_price.between" => "Price must be between 0 and 999999.99",
+            'item_img.*.mimes' => 'Only JPG, JPEG or PNG images are allowed',
+            'item_img.*.max' => 'Each image must not exceed 2MB',
+            "item_desc.max" => "Description must not exceed 1000 characters",
+            "category.required" => "Category is required",
+            "category.exists" => "Selected category does not exist",
         ];
 
         $validator = validator($request->all(), $rules, $messages);

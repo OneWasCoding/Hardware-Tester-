@@ -6,6 +6,17 @@
 @extends('layouts.template')
 @section('content')
 <div class="content" style="background-color: #f8f9fa; padding: 20px; border-radius: 5px;">
+    @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>
+                    {{$error}}
+                </li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <h2 class="mb-4">Edit Item</h2>
     <form action="{{ route('item.update', ['item' => $item->item_id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -21,7 +32,6 @@
                 class="form-control" 
                 value="{{ old('name', $item->item_name) }}" 
                 placeholder="Enter item name" 
-                required
             >
         </div>
 
@@ -33,7 +43,7 @@
                 class="form-control" 
                 rows="4" 
                 placeholder="Enter a brief description of the item" 
-                required
+                
             >{{ old('description', $item->item_desc) }}</textarea>
         </div>
 
@@ -48,7 +58,7 @@
                 placeholder="Enter item price" 
                 min="0" 
                 step="0.01" 
-                required
+                
             >
         </div>
 
@@ -86,7 +96,7 @@
                 name="category" 
                 id="category" 
                 class="form-control" 
-                required>
+                >
                 <option value="" disabled>Select Category</option>
                 @foreach($category as $categories)
                     <option 
@@ -105,7 +115,7 @@
                 name="status" 
                 id="status" 
                 class="form-control" 
-                required
+                
             >
                 <option value="available" {{ $item->item_status == 'available' ? 'selected' : '' }}>Available</option>
                 <option value="out_of_stock" {{ $item->item_status == 'out_of_stock' ? 'selected' : '' }}>Out of stock</option>
@@ -122,7 +132,7 @@
                 value="{{ old('stocks', $qty->quantity ?? 0) }}" 
                 placeholder="Enter stock quantity" 
                 min="0" 
-                required
+                
             >
         </div>
 
