@@ -10,6 +10,7 @@ use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Auth\Events\Login;
+use App\Http\Controllers\ChartController;
 
 
 Route::prefix("admin/users")->group(function(){
@@ -35,5 +36,6 @@ Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index')-
 Route::get('/order_status/{id}', [OrdersController::class, 'status_update'])->name('orders.status')->middleware(Admin::class);
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
 Route::get('reviews/destroy/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy')->middleware(Admin::class);
+
 
 ?>

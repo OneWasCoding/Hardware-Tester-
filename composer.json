@@ -11,6 +11,7 @@
     "require": {
         "php": "^8.2",
         "algolia/algoliasearch-client-php": "^4.18",
+        "consoletvs/charts": "^6.8",
         "laravel/framework": "^11.0",
         "laravel/scout": "^10.14",
         "laravel/tinker": "^2.10.1",
