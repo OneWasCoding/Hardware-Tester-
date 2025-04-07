@@ -24,7 +24,7 @@ class OrdersController extends Controller
         // dd($order, $request->status);
         if ($order) {
             $order->order_status = $request->status;
-           if($order->save()){
+           if($order->save() && $request->status=='completed'){
              $info=DB::table('orders')->where('orders.order_id', $id)     
              ->join('order_lines', 'orders.order_id', '=', 'order_lines.order_id')
                 ->join('accounts', 'orders.account_id', '=', 'accounts.account_id')
