@@ -88,7 +88,7 @@
                                 <select id="gender" 
                                     class="custom-select @error('gender') is-invalid @enderror" 
                                     name="gender">
-                                    <option value="" disabled {{ old('gender') ? '' : 'selected' }}>Select Gender</option>
+                                    <option value="" disabled {{ old('gender') ? '' : 'selected' }}>Sex</option>
                                     <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
                                     <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
                                 </select>

@@ -12,7 +12,7 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Artisan::command('send-welcome-mail', function () {
-    Mail::to('lems.leviasherpenaverde@gmail.com')->send(new checkoutMail("levi"));    
+    Mail::to('ianzae123ego@gmail.com')->send(new checkoutMail("Koolvi"));    
     // Also, you can use specific mailer if your default mailer is not "mailtrap" but you want to use it for welcome mails
     // Mail::mailer('mailtrap')->to('testreceiver@gmail.com')->send(new WelcomeMail("Jon"));
 })->purpose('Send welcome mail');
