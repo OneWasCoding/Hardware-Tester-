@@ -200,8 +200,8 @@
         <ul>
             <li><a href=""><i class="fas fa-home"></i> Dashboard</a></li>
             <li><a href="{{route('user.index')}}"><i class="fas fa-users"></i> Users</a></li>
-            <li><a href="{{route('item.index')}}"><i class="fas fa-bed"></i> Items</a></li>
-            <li><a href="{{route('orders.index')}}"><i class="fas fa-cart-shopping"></i>Orders</a></li>
+            <li><a href="{{route('item.index')}}"><i class="fas fa-cart-shopping"></i> Items</a></li>
+            <li><a href="{{route('orders.index')}}"><i class="fas fa-truck"></i>Orders</a></li>
             <li><a href="{{route('reviews.index')}}"><i class="fas fa-scroll"></i>Reviews</a></li>
             <li>
                 <form action="{{ route('logout') }}" method="POST">
