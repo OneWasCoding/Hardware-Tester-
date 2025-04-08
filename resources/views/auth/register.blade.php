@@ -5,7 +5,7 @@
     <div class="register-card">
         <div class="card-header">
             <h3>{{ __('Create Account') }}</h3>
-            <p class="subtitle">Join Keyboard Haven today</p>
+            <p class="subtitle">Register Now!</p>
         </div>
 
         <div class="card-body">
@@ -54,7 +54,7 @@
                     <div class="col-md-6 mb-4">
                         <div class="form-floating">
                             <select id="gender" class="form-select @error('gender') is-invalid @enderror" name="gender"    aria-label="Gender">
-                                <option value="" disabled {{ old('gender') ? '' : 'selected' }}>Select Gender</option>
+                                <option value="" disabled {{ old('gender') ? '' : 'selected' }}>Sex</option>
                                 <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
                                 <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
                             </select>
